@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/colorPrimary">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                 android:hint="email"
                 android:inputType="textEmailAddress"
                 android:paddingBottom="15dp"
-                android:textColorHint="@color/colorAccent" />
+                android:textColorHint="@color/black" />
 
             <EditText
                 android:id="@+id/editTextPassword"
@@ -59,7 +59,7 @@
                 android:hint="password"
                 android:inputType="textPassword"
                 android:paddingBottom="15dp"
-                android:textColorHint="@color/colorAccent" />
+                android:textColorHint="@color/black" />
 
             <Button
                 android:id="@+id/buttonSignUp"
@@ -69,7 +69,7 @@
                 android:layout_margin="7dp"
                 android:text="Sign Up"
                 android:textAllCaps="false"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/textViewLogin"
@@ -79,7 +79,7 @@
                 android:text="Already have an account? Login"
                 android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/black" />
 
 
         </LinearLayout>
