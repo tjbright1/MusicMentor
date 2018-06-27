@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "685480979022",
+    "firebase_url": "https://musicmentorprototype.firebaseio.com",
+    "project_id": "musicmentorprototype",
+    "storage_bucket": "musicmentorprototype.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685480979022:android:76b787b25b4524f7",
+        "android_client_info": {
+          "package_name": "com.example.musicmentor.musicmentor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685480979022-ahr10adotpg35bc9bvt4ipi2ujhmntkp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.musicmentor.musicmentor",
+            "certificate_hash": "ed5e3acd19832365018d906e50f4b9a435d73744"
+          }
+        },
+        {
+          "client_id": "685480979022-tegm3kkbhopoubef3d98uuqr9p7658fk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMoUgRa-B41Y4pn8LEI9KWUZJGozrLrWE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685480979022-tegm3kkbhopoubef3d98uuqr9p7658fk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
