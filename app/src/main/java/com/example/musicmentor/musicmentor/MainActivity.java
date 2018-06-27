@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -19,6 +20,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Logic borrowed from a tutorial at https://dzone.com/articles/android-tips
@@ -35,6 +39,29 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     VideoView videoView;
     VideoView resultVideo;
+
+    private ExpandableListView expandableListView;
+
+    String[] parent = new String[]{"Lesson1", "Lesson2"};
+    String[] t1 = new String[]{"Task1", "Task2"};
+    String[] t2 = new String[]{"Task1"};
+    String[] video1 = new String[]{"Video1"};
+    String[] video2 = new String[]{"Video2"};
+    String[] video3 = new String[]{"Video1"};
+
+    LinkedHashMap<String, String[]> thirdLevelq1 = new LinkedHashMap<>();
+    LinkedHashMap<String, String[]> thirdLevelq2 = new LinkedHashMap<>();
+    LinkedHashMap<String, String[]> thirdLevelq3 = new LinkedHashMap<>();
+    /**
+     * Second level array list
+     */
+    List<String[]> secondLevel = new ArrayList<>();
+    /**
+     * Inner level data
+     */
+    List<LinkedHashMap<String, String[]>> data = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("tag2", "activitycreate");
@@ -49,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
         button = (Button) findViewById(R.id.button);
         resultVideo = (VideoView) findViewById(R.id.videoView);
+
+        setUpAdapter();
     }
     /**
      * onClick handler
@@ -121,4 +150,35 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+
+
+    private void setUpAdapter() {
+        secondLevel.add(t1);
+        secondLevel.add(t2);
+        thirdLevelq1.put(t1[0], video1);
+        thirdLevelq1.put(t1[1], video2);
+        thirdLevelq2.put(t2[0], video3);
+
+        data.add(thirdLevelq1);
+        data.add(thirdLevelq2);
+        data.add(thirdLevelq3);
+        expandableListView = (ExpandableListView) findViewById(R.id.expandible_listview);
+        //passing three level of information to constructor
+        ThreeLevelListAdapter threeLevelListAdapterAdapter = new ThreeLevelListAdapter(this, parent, secondLevel, data);
+        expandableListView.setAdapter(threeLevelListAdapterAdapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            int previousGroup = -1;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != previousGroup)
+                    expandableListView.collapseGroup(previousGroup);
+                previousGroup = groupPosition;
+            }
+        });
+
+
+    }
+
 }
