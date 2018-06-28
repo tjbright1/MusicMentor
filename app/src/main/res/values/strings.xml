@@ -21,4 +21,12 @@
         completions."
     </string>
     <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_main_teacher">MainActivityTeacher</string>
+    <string name="title_activity_video">VideoActivity</string>
+    <string name="title_activity_home_page_teacher">HomePageTeacher</string>
+    <string name="title_activity_home_page_student">HomePageStudent</string>
+    <string name="title_activity_main_student">MainActivityStudent</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_new_video_student">NewVideoStudent</string>
+    <string name="title_activity_new_video_teacher">NewVideoTeacher</string>
 </resources>

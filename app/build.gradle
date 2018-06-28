@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-messaging:9.6.0'
     compile 'com.google.firebase:firebase-auth:9.6.0'
     compile 'com.google.firebase:firebase-core:9.6.0'
     compile "com.google.android.gms:play-services-base:9.6.0"

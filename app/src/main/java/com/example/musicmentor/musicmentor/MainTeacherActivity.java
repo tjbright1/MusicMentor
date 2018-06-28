@@ -1,10 +1,10 @@
 package com.example.musicmentor.musicmentor;
-
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainTeacherActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
@@ -23,8 +23,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        setContentView(R.layout.activity_main_teacher);
+
+        Button button = (Button) findViewById(R.id.addTask);
+        button.setOnClickListener (new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),NewVideoTeacher.class);
+                startActivity(i);
+            }
+        });
+
+
+        expandableListView = (ExpandableListView) findViewById(R.id.expandableListViewTeacher);
         expandableListDetail = ExpandableListDataPump.getData();
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
@@ -63,10 +73,7 @@ public class MainActivity extends AppCompatActivity {
                                 childPosition), Toast.LENGTH_SHORT
                 ).show();
                 finish();
-                Intent intent = new Intent(MainActivity.this, NewVideoStudent.class);
-                Log.v("childPosition", Integer.toString(childPosition));
-                Log.v("groupPosition", Integer.toString(groupPosition));
-
+                Intent intent = new Intent(MainTeacherActivity.this, NewVideoTeacher.class);
                 intent.putExtra("groupPosition", Integer.toString(groupPosition));
                 intent.putExtra("childPosition", Integer.toString(childPosition));
                 startActivity(intent);
@@ -76,4 +83,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
