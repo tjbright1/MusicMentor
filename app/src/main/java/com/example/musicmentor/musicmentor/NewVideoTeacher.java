@@ -64,7 +64,10 @@ public class NewVideoTeacher extends Activity {
         Button button = (Button) findViewById(R.id.buttonFeedback);
         button.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {
-                mDatabase.child("users").child("asdf").setValue(feedback.getText().toString());
+                String childPosition = getIntent().getStringExtra("childPosition");
+                String groupPosition = getIntent().getStringExtra("groupPosition");
+                mDatabase.child(groupPosition).child(childPosition).setValue(feedback.getText().toString());
+
             }
         });
 

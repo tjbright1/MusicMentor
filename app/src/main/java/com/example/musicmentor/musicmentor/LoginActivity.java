@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         if (mAuth.getCurrentUser() != null) {
-            /*final FirebaseUser user = mAuth.getCurrentUser();
+            final FirebaseUser user = mAuth.getCurrentUser();
             mDatabase.child("users").child(user.getUid());
             mDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -132,11 +132,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     // whenever data at this location is updated.
                     String value = dataSnapshot.child("users").child(user.getUid()).getValue(String.class);
                     Log.v("VALUEOF", value);
-                    if (value == "Student") {
+                    if (value.equals("Student")) {
                         finish();
                         Intent intent = new Intent(LoginActivity.this, HomePageStudentActivity.class);
                         startActivity(intent);
-                    } else if (value == "Teacher") {
+                    } else if (value.equals("Teacher")) {
                         finish();
                         Intent intent = new Intent(LoginActivity.this, HomePageTeacherActivity.class);
                         startActivity(intent);
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void onCancelled(DatabaseError error) {
                     // Failed to read value
                 }
-            });*/
+            });
         }
     }
 

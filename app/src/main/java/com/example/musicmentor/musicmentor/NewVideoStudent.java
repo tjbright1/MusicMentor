@@ -16,9 +16,16 @@ import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,12 +40,15 @@ public class NewVideoStudent extends Activity {
 
     private StorageReference videoRef;
 
+    private DatabaseReference mDatabase;
+
 
     TextView task_1;
     TextView video_1;
     Button button;
     VideoView videoView;
     VideoView resultVideo;
+    TextView feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,29 @@ public class NewVideoStudent extends Activity {
 
         button = (Button) findViewById(R.id.button);
         resultVideo = (VideoView) findViewById(R.id.videoView);
+
+        feedback = (TextView) findViewById(R.id.videoFeedbackStudent);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        final String childPosition = getIntent().getStringExtra("childPosition");
+        final String groupPosition = getIntent().getStringExtra("groupPosition");
+
+        mDatabase.child(groupPosition).child(childPosition);
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.child(groupPosition).child(childPosition).getValue(String.class);
+                feedback.setText(value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+            }
+        });
     }
 
 
@@ -68,6 +101,8 @@ public class NewVideoStudent extends Activity {
             Uri videoUri = intent.getData();
             resultVideo.setVideoURI(videoUri);
             Log.v("videouri: ", videoUri.toString());
+
+
 
             //Upload file to firebase
             //Uri file = Uri.fromFile(new File(videoUri.toString()));
