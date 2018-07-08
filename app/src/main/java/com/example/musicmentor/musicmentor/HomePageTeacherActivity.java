@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +24,7 @@ public class HomePageTeacherActivity extends AppCompatActivity {
 
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        Button button = (Button) findViewById(R.id.teacherLesson);
+        ImageButton button = (ImageButton) findViewById(R.id.teacherLesson);
         button.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),MainTeacherActivity.class);
@@ -31,7 +32,7 @@ public class HomePageTeacherActivity extends AppCompatActivity {
             }
         });
 
-        Button logout = (Button) findViewById(R.id.logoutTeacher);
+        ImageButton logout = (ImageButton) findViewById(R.id.logoutTeacher);
         logout.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {
                 mAuth.signOut();

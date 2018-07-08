@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +23,7 @@ public class HomePageStudentActivity extends AppCompatActivity {
 
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        Button button = (Button) findViewById(R.id.studentLesson);
+        ImageButton button = (ImageButton) findViewById(R.id.studentLesson);
         button.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(),MainActivity.class);
@@ -30,7 +31,7 @@ public class HomePageStudentActivity extends AppCompatActivity {
             }
         });
 
-        Button logout = (Button) findViewById(R.id.logoutStudent);
+        ImageButton logout = (ImageButton) findViewById(R.id.logoutStudent);
         logout.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {
                 mAuth.signOut();
