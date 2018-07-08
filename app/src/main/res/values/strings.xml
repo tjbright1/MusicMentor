@@ -29,4 +29,5 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_new_video_student">NewVideoStudent</string>
     <string name="title_activity_new_video_teacher">NewVideoTeacher</string>
+    <string name="title_activity_add_task">AddTaskActivity</string>
 </resources>

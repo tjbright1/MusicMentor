@@ -63,6 +63,10 @@
         <activity
             android:name=".HomePageTeacherActivity"
             android:label="@string/title_activity_home_page_teacher"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddTaskActivity"
+            android:label="@string/title_activity_add_task"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

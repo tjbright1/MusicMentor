@@ -81,7 +81,7 @@ public class NewVideoTeacher extends Activity {
         String groupPosition = getIntent().getStringExtra("groupPosition");
 
 
-        StorageReference fileReference = storageReference.child(groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
+        StorageReference fileReference = storageReference.child(groupPosition + "/" + childPosition + "/" + "newvideo.webm");
 
         try {
             final File localFile = File.createTempFile("testing1", "3pg");
