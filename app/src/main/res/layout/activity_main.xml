@@ -23,7 +23,8 @@
             android:layout_height="338dp"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="0.5dp"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+            />
 
     </RelativeLayout>
 
