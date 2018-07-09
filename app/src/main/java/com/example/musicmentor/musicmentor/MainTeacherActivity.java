@@ -1,10 +1,10 @@
 package com.example.musicmentor.musicmentor;
-
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -19,19 +19,39 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainTeacherActivity extends AppCompatActivity {
+
+    private Button addTask;
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
-    private DatabaseReference mDatabase;
+    private static DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        setContentView(R.layout.activity_main_teacher);
+
+        addTask = (Button) findViewById(R.id.addTask);
+
+        Button button = (Button) findViewById(R.id.addTask);
+        button.setOnClickListener (new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),NewVideoTeacher.class);
+                startActivity(i);
+            }
+        });
+
+        addTask.setOnClickListener (new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),AddTaskActivity.class);
+                startActivity(i);
+            }
+        });
+
+        expandableListView = (ExpandableListView) findViewById(R.id.expandableListViewTeacher);
         final HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
         mDatabase = FirebaseDatabase.getInstance().getReference("lessons/currentLesson/tasks");
 
@@ -39,19 +59,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    for (DataSnapshot child: dataSnapshot.getChildren()) {
                         List<String> task = new ArrayList<String>();
                         Log.i("MyTag", child.getKey().toString());
                         expandableListDetail.put("Task: " + child.getKey().toString(), task);
                     }
                 }
                 expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-                expandableListAdapter = new CustomExpandableListAdapter(MainActivity.this, expandableListTitle, expandableListDetail);
+                expandableListAdapter = new CustomExpandableListAdapter(MainTeacherActivity.this, expandableListTitle, expandableListDetail);
                 expandableListView.setAdapter(expandableListAdapter);
                 expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
                     @Override
                     public void onGroupExpand(int groupPosition) {
+
                     }
                 });
 
@@ -70,25 +91,21 @@ public class MainActivity extends AppCompatActivity {
                                                 int groupPosition, int childPosition, long id) {
 
                         finish();
-                        Intent intent = new Intent(MainActivity.this, NewVideoStudent.class);
-                        Log.v("childPosition", Integer.toString(childPosition));
-                        Log.v("groupPosition", Integer.toString(groupPosition));
-
+                        Intent intent = new Intent(MainTeacherActivity.this, NewVideoTeacher.class);
                         intent.putExtra("groupPosition", Integer.toString(groupPosition));
                         intent.putExtra("childPosition", Integer.toString(childPosition));
                         startActivity(intent);
                         return false;
                     }
                 });
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // ...
             }
-
         });
     }
+
 }
-
-
