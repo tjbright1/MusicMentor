@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -45,7 +46,7 @@ public class NewVideoStudent extends Activity {
 
     TextView task_1;
     TextView video_1;
-    Button button;
+    ImageButton button;
     VideoView videoView;
     VideoView resultVideo;
     TextView feedback;
@@ -57,7 +58,7 @@ public class NewVideoStudent extends Activity {
         setContentView(R.layout.activity_new_video_student);
 
 
-        button = (Button) findViewById(R.id.button);
+        button = (ImageButton) findViewById(R.id.button);
         resultVideo = (VideoView) findViewById(R.id.videoView);
 
         feedback = (TextView) findViewById(R.id.videoFeedbackStudent);
