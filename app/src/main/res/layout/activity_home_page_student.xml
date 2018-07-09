@@ -10,27 +10,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="141dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="222dp"
+            android:layout_height="78dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/logo" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="87dp"
+            android:id="@+id/textView3"
+            android:layout_width="384dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimaryDark"
             android:text="Music Mentor"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="50sp" />
+            android:textSize="42sp" />
+
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="644dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="424dp"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:paddingLeft="15dp"
@@ -40,7 +50,7 @@
                 android:id="@+id/studentLesson"
                 android:layout_width="352dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="34dp"
                 android:background="@android:color/transparent"
                 app:srcCompat="@drawable/notebook" />
 
@@ -48,7 +58,7 @@
                 android:id="@+id/findTeachers"
                 android:layout_width="343dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="34dp"
                 android:background="@android:color/transparent"
                 app:srcCompat="@drawable/search" />
 
@@ -56,7 +66,7 @@
                 android:id="@+id/logoutStudent"
                 android:layout_width="343dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="42dp"
                 android:background="@android:color/transparent"
                 app:srcCompat="@drawable/logout" />
 
@@ -78,7 +88,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical">
+
+        </LinearLayout>
     </RelativeLayout>
 
 
