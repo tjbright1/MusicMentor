@@ -71,6 +71,10 @@
         <activity
             android:name=".ViewRecordingStudent"
             android:label="@string/title_activity_view_recording_student"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewRecordingTeacher"
+            android:label="@string/title_activity_view_recording_teacher"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -28,11 +28,14 @@ public class MainTeacherActivity extends AppCompatActivity {
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
     private static DatabaseReference mDatabase;
+    private static DatabaseReference mDatabase1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_teacher);
+
+        mDatabase1 = FirebaseDatabase.getInstance().getReference();
 
         addTask = (Button) findViewById(R.id.addTask);
 
@@ -71,7 +74,7 @@ public class MainTeacherActivity extends AppCompatActivity {
                     }
                 }
                 expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-                expandableListAdapter = new CustomExpandableListAdapter(MainTeacherActivity.this, expandableListTitle, expandableListDetail);
+                expandableListAdapter = new CustomExpandableListAdapter(MainTeacherActivity.this, expandableListTitle, expandableListDetail, "Teacher");
                 expandableListView.setAdapter(expandableListAdapter);
                 expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -95,19 +98,25 @@ public class MainTeacherActivity extends AppCompatActivity {
                     public boolean onChildClick(ExpandableListView parent, View v,
                                                 int groupPosition, int childPosition, long id) {
 
+                        Log.i("change:", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
+
                         finish();
                         Intent intent;
                         Log.v("parent: ", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
                         if (parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString() == "Add New Recording +") {
-                            intent = new Intent(MainTeacherActivity.this, NewVideoStudent.class);
+                            intent = new Intent(MainTeacherActivity.this, NewVideoTeacher.class);
                             intent.putExtra("groupPosition", Integer.toString(groupPosition));
                             intent.putExtra("childPosition", Integer.toString(childPosition));
                             intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
                         } else {
-                            intent = new Intent(MainTeacherActivity.this, NewVideoTeacher.class);
+                            Log.i("creating", "intent");
+                            intent = new Intent(MainTeacherActivity.this, ViewRecordingTeacher.class);
                             intent.putExtra("groupPosition", Integer.toString(groupPosition));
                             intent.putExtra("childPosition", Integer.toString(childPosition));
+                            intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
+                            Log.i("Done","putting");
                         }
+                        Log.i("starting","activity");
                         startActivity(intent);
                         return false;
                     }

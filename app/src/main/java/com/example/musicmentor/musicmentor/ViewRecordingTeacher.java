@@ -28,7 +28,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 
-public class ViewRecordingStudent extends AppCompatActivity {
+public class ViewRecordingTeacher extends AppCompatActivity {
 
     static final int REQUEST_VIDEO_CAPTURE = 1;
 
@@ -48,14 +48,12 @@ public class ViewRecordingStudent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("tag2", "activitycreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_recording_student);
+        setContentView(R.layout.activity_view_recording_teacher);
 
-        resultVideo = (VideoView) findViewById(R.id.videoViewStudent);
+        resultVideo = (VideoView) findViewById(R.id.videoViewTeacher);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase1 = FirebaseDatabase.getInstance().getReference();
-
-        feedback = (TextView) findViewById(R.id.videoFeedbackStudent);
 
         //Upload file to firebase
         //Uri file = Uri.fromFile(new File(videoUri.toString()));
@@ -66,10 +64,6 @@ public class ViewRecordingStudent extends AppCompatActivity {
         final String childPosition = getIntent().getStringExtra("childPosition");
         final String groupPosition = getIntent().getStringExtra("groupPosition");
         final String title = getIntent().getStringExtra("title");
-        Log.i("title", title);
-
-        Log.i("childi: ", childPosition);
-        Log.i("groupi: ", groupPosition);
 
         mDatabase.child(groupPosition).child(childPosition);
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,8 +71,6 @@ public class ViewRecordingStudent extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.child(groupPosition).child(childPosition).getValue(String.class);
-                feedback.setText(value);
             }
 
             @Override

@@ -88,8 +88,8 @@ public class NewVideoStudent extends Activity {
             //Upload file to firebase
             //Uri file = Uri.fromFile(new File(videoUri.toString()));
 
-            String childPosition = getIntent().getStringExtra("childPosition");
-            String groupPosition = getIntent().getStringExtra("groupPosition");
+            final String childPosition = getIntent().getStringExtra("childPosition");
+            final String groupPosition = getIntent().getStringExtra("groupPosition");
             final String parent = getIntent().getStringExtra("parent").substring(getIntent().getStringExtra("parent").indexOf(' ') + 1);
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -106,7 +106,8 @@ public class NewVideoStudent extends Activity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child("lessons").child("currentLesson").child("tasks").child(parent).child(recordingTitle.getText().toString()).setValue("video");
+                    mDatabase.child("lessons").child("currentLesson").child("tasks").child(parent).child(recordingTitle.getText().toString()).setValue("Student");
+                    mDatabase.child("notify").child(recordingTitle.getText().toString()).setValue("Teacher");
 
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                     // ...

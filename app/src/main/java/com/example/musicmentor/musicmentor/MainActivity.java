@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
     private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         final HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
         mDatabase = FirebaseDatabase.getInstance().getReference("lessons/currentLesson/tasks");
+        mDatabase1 = FirebaseDatabase.getInstance().getReference();
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-                expandableListAdapter = new CustomExpandableListAdapter(MainActivity.this, expandableListTitle, expandableListDetail);
+                expandableListAdapter = new CustomExpandableListAdapter(MainActivity.this, expandableListTitle, expandableListDetail, "Student");
                 expandableListView.setAdapter(expandableListAdapter);
                 expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onChildClick(ExpandableListView parent, View v,
                                                 int groupPosition, int childPosition, long id) {
 
+                        Log.i("change:", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
+                        Log.i("ASDF", "JKL:");
                         finish();
                         Intent intent;
                         Log.v("parent: ", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(MainActivity.this, ViewRecordingStudent.class);
                             intent.putExtra("groupPosition", Integer.toString(groupPosition));
                             intent.putExtra("childPosition", Integer.toString(childPosition));
+                            intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
                         }
                         Log.v("childPosition", Integer.toString(childPosition));
                         Log.v("groupPosition", Integer.toString(groupPosition));
