@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="289dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp" />
+        android:layout_marginTop="99dp" />
 
     <TextView
         android:id="@+id/videoFeedbackStudent"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="98dp"
         android:text="Feedback" />
 
     <ImageButton
@@ -43,9 +43,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="50dp"
+        android:clickable="true"
         android:background="@android:color/transparent"
-        android:src="@drawable/record" />
+        android:src="@drawable/record"
+        android:onClick="dispatchTakeVideoIntent"/>
 
 
 </RelativeLayout>
