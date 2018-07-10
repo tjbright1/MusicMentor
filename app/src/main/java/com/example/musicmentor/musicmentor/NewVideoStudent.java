@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -49,6 +50,7 @@ public class NewVideoStudent extends Activity {
     VideoView videoView;
     VideoView resultVideo;
     TextView feedback;
+    EditText recordingTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class NewVideoStudent extends Activity {
         resultVideo = (VideoView) findViewById(R.id.videoView);
 
         feedback = (TextView) findViewById(R.id.videoFeedbackStudent);
+        recordingTitle = (EditText) findViewById(R.id.recordingTitle);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -109,6 +112,7 @@ public class NewVideoStudent extends Activity {
 
             String childPosition = getIntent().getStringExtra("childPosition");
             String groupPosition = getIntent().getStringExtra("groupPosition");
+            final String parent = getIntent().getStringExtra("parent").substring(getIntent().getStringExtra("parent").indexOf(' ') + 1);
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
             videoRef = storageRef.child("/" + groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
@@ -123,8 +127,14 @@ public class NewVideoStudent extends Activity {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("lessons").child("currentLesson").child("tasks").child(parent).child(recordingTitle.getText().toString()).setValue("video");
+
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                     // ...
+                    finish();
+                    Intent intent = new Intent(NewVideoStudent.this, MainActivity.class);
+                    startActivity(intent);
                     Log.v("tag","SUCCESS");
                 }
             });

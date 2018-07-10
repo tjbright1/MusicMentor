@@ -79,15 +79,18 @@ public class NewVideoTeacher extends Activity {
 
         String childPosition = getIntent().getStringExtra("childPosition");
         String groupPosition = getIntent().getStringExtra("groupPosition");
+        Log.i("childi: ", childPosition);
+        Log.i("groupi: ", groupPosition);
 
 
-        StorageReference fileReference = storageReference.child(groupPosition + "/" + childPosition + "/" + "newvideo.webm");
-
+        StorageReference fileReference = storageReference.child(groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
+        Log.i("tryingit", "now");
         try {
             final File localFile = File.createTempFile("testing1", "3pg");
             fileReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Log.i("successfulyeah", "whatev");
                     resultVideo.setVideoURI(Uri.fromFile(localFile));
                     resultVideo.start();
                 }

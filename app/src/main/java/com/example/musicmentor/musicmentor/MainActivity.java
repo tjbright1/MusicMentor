@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
                     for (DataSnapshot child : dataSnapshot.getChildren()) {
                         List<String> task = new ArrayList<String>();
                         Log.i("MyTag", child.getKey().toString());
+                        for(DataSnapshot video : child.getChildren()) {
+                            Log.i("Videoname: ", video.getKey().toString());
+                            task.add(video.getKey().toString());
+                        }
+                        task.add("Add New Recording +");
                         expandableListDetail.put("Task: " + child.getKey().toString(), task);
                     }
                 }
@@ -71,12 +76,20 @@ public class MainActivity extends AppCompatActivity {
                                                 int groupPosition, int childPosition, long id) {
 
                         finish();
-                        Intent intent = new Intent(MainActivity.this, NewVideoStudent.class);
+                        Intent intent;
+                        Log.v("parent: ", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+                        if (parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString() == "Add New Recording +") {
+                            intent = new Intent(MainActivity.this, NewVideoStudent.class);
+                            intent.putExtra("groupPosition", Integer.toString(groupPosition));
+                            intent.putExtra("childPosition", Integer.toString(childPosition));
+                            intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+                        } else {
+                            intent = new Intent(MainActivity.this, NewVideoTeacher.class);
+                            intent.putExtra("groupPosition", Integer.toString(groupPosition));
+                            intent.putExtra("childPosition", Integer.toString(childPosition));
+                        }
                         Log.v("childPosition", Integer.toString(childPosition));
                         Log.v("groupPosition", Integer.toString(groupPosition));
-
-                        intent.putExtra("groupPosition", Integer.toString(groupPosition));
-                        intent.putExtra("childPosition", Integer.toString(childPosition));
                         startActivity(intent);
                         return false;
                     }

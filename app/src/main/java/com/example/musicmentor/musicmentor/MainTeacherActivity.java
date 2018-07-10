@@ -62,6 +62,7 @@ public class MainTeacherActivity extends AppCompatActivity {
                     for (DataSnapshot child: dataSnapshot.getChildren()) {
                         List<String> task = new ArrayList<String>();
                         Log.i("MyTag", child.getKey().toString());
+                        task.add("Add New Recording +");
                         expandableListDetail.put("Task: " + child.getKey().toString(), task);
                     }
                 }
@@ -91,9 +92,18 @@ public class MainTeacherActivity extends AppCompatActivity {
                                                 int groupPosition, int childPosition, long id) {
 
                         finish();
-                        Intent intent = new Intent(MainTeacherActivity.this, NewVideoTeacher.class);
-                        intent.putExtra("groupPosition", Integer.toString(groupPosition));
-                        intent.putExtra("childPosition", Integer.toString(childPosition));
+                        Intent intent;
+                        Log.v("parent: ", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+                        if (parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString() == "Add New Recording +") {
+                            intent = new Intent(MainTeacherActivity.this, NewVideoStudent.class);
+                            intent.putExtra("groupPosition", Integer.toString(groupPosition));
+                            intent.putExtra("childPosition", Integer.toString(childPosition));
+                            intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+                        } else {
+                            intent = new Intent(MainTeacherActivity.this, NewVideoTeacher.class);
+                            intent.putExtra("groupPosition", Integer.toString(groupPosition));
+                            intent.putExtra("childPosition", Integer.toString(childPosition));
+                        }
                         startActivity(intent);
                         return false;
                     }
