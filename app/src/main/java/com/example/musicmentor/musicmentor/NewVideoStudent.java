@@ -50,7 +50,6 @@ public class NewVideoStudent extends Activity {
     ImageButton button;
     VideoView videoView;
     VideoView resultVideo;
-    TextView feedback;
     EditText recordingTitle;
 
     @Override
@@ -63,29 +62,7 @@ public class NewVideoStudent extends Activity {
         button = (ImageButton) findViewById(R.id.button);
         resultVideo = (VideoView) findViewById(R.id.videoView);
 
-        feedback = (TextView) findViewById(R.id.videoFeedbackStudent);
         recordingTitle = (EditText) findViewById(R.id.recordingTitle);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        final String childPosition = getIntent().getStringExtra("childPosition");
-        final String groupPosition = getIntent().getStringExtra("groupPosition");
-
-        mDatabase.child(groupPosition).child(childPosition);
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.child(groupPosition).child(childPosition).getValue(String.class);
-                feedback.setText(value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
     }
 
 

@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("childPosition", Integer.toString(childPosition));
                             intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
                         } else {
-                            intent = new Intent(MainActivity.this, NewVideoTeacher.class);
+                            intent = new Intent(MainActivity.this, ViewRecordingStudent.class);
                             intent.putExtra("groupPosition", Integer.toString(groupPosition));
                             intent.putExtra("childPosition", Integer.toString(childPosition));
                         }

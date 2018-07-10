@@ -67,6 +67,10 @@
         <activity
             android:name=".AddTaskActivity"
             android:label="@string/title_activity_add_task"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewRecordingStudent"
+            android:label="@string/title_activity_view_recording_student"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
