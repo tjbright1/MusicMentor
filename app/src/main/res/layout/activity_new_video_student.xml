@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -24,19 +25,8 @@
         android:id="@+id/videoView"
         android:layout_width="wrap_content"
         android:layout_height="289dp"
-        android:layout_below="@+id/video_1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp" />
-
-    <Button
-        android:text="RECORD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/video_1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:id="@+id/button"
-        android:onClick="dispatchTakeVideoIntent"/>
 
     <TextView
         android:id="@+id/videoFeedbackStudent"
@@ -46,6 +36,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="60dp"
         android:text="Feedback" />
+
+    <ImageButton
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/record" />
 
 
 </RelativeLayout>

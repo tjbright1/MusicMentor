@@ -1,12 +1,14 @@
 package com.example.musicmentor.musicmentor;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -45,7 +47,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         findViewById(R.id.textViewSignup).setOnClickListener(this);
         findViewById(R.id.buttonLogin).setOnClickListener(this);
+        Button button = findViewById(R.id.buttonLogin);
 
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "BebasNeueLight.ttf");
+        button.setTypeface(typeface);
     }
 
     private void userLogin() {

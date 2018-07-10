@@ -62,6 +62,10 @@ public class MainTeacherActivity extends AppCompatActivity {
                     for (DataSnapshot child: dataSnapshot.getChildren()) {
                         List<String> task = new ArrayList<String>();
                         Log.i("MyTag", child.getKey().toString());
+                        for(DataSnapshot video : child.getChildren()) {
+                            Log.i("Videoname: ", video.getKey().toString());
+                            task.add(video.getKey().toString());
+                        }
                         task.add("Add New Recording +");
                         expandableListDetail.put("Task: " + child.getKey().toString(), task);
                     }

@@ -14,11 +14,11 @@
         android:layout_weight="1">
 
         <ImageView
-            android:layout_width="85dp"
-            android:layout_height="100dp"
+            android:layout_width="132dp"
+            android:layout_height="147dp"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
-
+            android:layout_centerVertical="true"
+            android:src="@drawable/logo" />
     </RelativeLayout>
 
 
@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:src="@drawable/logo"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
+                android:fontFamily="BebasNeueLight"
                 android:hint="email"
                 android:inputType="textEmailAddress"
                 android:paddingBottom="15dp"
@@ -50,7 +51,7 @@
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
+                android:fontFamily="BebasNeueLight"
                 android:hint="password"
                 android:inputType="textPassword"
                 android:paddingBottom="15dp"
@@ -63,8 +64,12 @@
                 android:layout_gravity="center"
                 android:layout_margin="7dp"
                 android:text="Login"
+                android:fontFamily="Condensed bold"
                 android:textAllCaps="false"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textSize="20sp"
+                />
 
             <TextView
                 android:id="@+id/textViewSignup"
@@ -73,6 +78,7 @@
                 android:padding="15dp"
                 android:text="Don't have account? Sign Up"
                 android:textAlignment="center"
+                android:fontFamily="BebasNeueLight"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/black" />
 

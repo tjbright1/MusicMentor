@@ -6,62 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".HomePageTeacherActivity">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="604dp"
         android:layout_weight="1">
 
-        <ImageView
-            android:layout_width="85dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="390dp"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
-            <Button
+            <ImageButton
                 android:id="@+id/teacherLesson"
-                android:layout_width="match_parent"
+                android:layout_width="337dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="7dp"
-                android:text="Current Lesson"
-                android:textAllCaps="false"
-                android:textColor="@color/black" />
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="42dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/notebook" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/findStudents"
-                android:layout_width="match_parent"
+                android:layout_width="337dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="7dp"
-                android:text="Find Stuents"
-                android:textAllCaps="false"
-                android:textColor="@color/black" />
+                android:layout_below="@+id/teacherLesson"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="42dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/search" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/logoutTeacher"
-                android:layout_width="match_parent"
+                android:layout_width="333dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="7dp"
-                android:text="Logout"
-                android:textAllCaps="false"
-                android:textColor="@color/black" />
+                android:layout_marginTop="42dp"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/logout" />
 
 
         </LinearLayout>
@@ -73,6 +58,35 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="159dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            >
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="102dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="87dp"
+                android:layout_weight="1"
+                android:text="Music Mentor"
+
+                android:textColor="@color/black"
+                android:textSize="42sp" />
+        </LinearLayout>
+
     </RelativeLayout>
 
 
