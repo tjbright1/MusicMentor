@@ -2,9 +2,12 @@ package com.example.musicmentor.musicmentor;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +16,19 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.VideoView;
+
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.ViewGroup;
+import java.io.IOException;
+
+import android.Manifest;
+import android.media.MediaRecorder;
+import java.io.*;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +47,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.jar.*;
 
+import static android.Manifest.permission.RECORD_AUDIO;
 import static android.app.Activity.RESULT_OK;
 
 public class NewVideoStudent extends Activity {
@@ -49,18 +67,40 @@ public class NewVideoStudent extends Activity {
     VideoView videoView;
     VideoView resultVideo;
     TextView feedback;
+    Button audioButton;
+    Button playButton;
+
+    private static final String LOG_TAG = "AudioRecordTest";
+
+    private MediaRecorder mRecorder = null;
+    private MediaPlayer mPlayer = null;
+
+    final int REQUEST_PERMISSION_CODE = 200;
+    private boolean permissionToRecord = false;
+    private String[] permissions = {RECORD_AUDIO};
+
+
+    private static String mFileName = null;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("tag2", "activitycreate");
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_new_video_student);
 
+        audioButton = (Button) findViewById((R.id.audioButton));
+        playButton = (Button) findViewById(R.id.playButton);
 
         button = (Button) findViewById(R.id.button);
         resultVideo = (VideoView) findViewById(R.id.videoView);
 
         feedback = (TextView) findViewById(R.id.videoFeedbackStudent);
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -84,15 +124,12 @@ public class NewVideoStudent extends Activity {
         });
     }
 
-
-
     public void dispatchTakeVideoIntent(View videoView) {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
