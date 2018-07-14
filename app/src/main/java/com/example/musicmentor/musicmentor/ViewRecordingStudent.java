@@ -1,5 +1,7 @@
 package com.example.musicmentor.musicmentor;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,16 +47,22 @@ public class ViewRecordingStudent extends AppCompatActivity {
     TextView feedback;
 
     @Override
+    public void onBackPressed()
+    {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        final String title = getIntent().getStringExtra("title");
+        mDatabase.child("notify").child(title).setValue("seen");
+        // code here to show dialog
+        super.onBackPressed();  // optional depending on your needs
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("tag2", "activitycreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_recording_student);
 
         resultVideo = (VideoView) findViewById(R.id.videoViewStudent);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase1 = FirebaseDatabase.getInstance().getReference();
-
         feedback = (TextView) findViewById(R.id.videoFeedbackStudent);
 
         //Upload file to firebase
@@ -65,12 +73,10 @@ public class ViewRecordingStudent extends AppCompatActivity {
 
         final String childPosition = getIntent().getStringExtra("childPosition");
         final String groupPosition = getIntent().getStringExtra("groupPosition");
+        final String parent = getIntent().getStringExtra("parent").substring(getIntent().getStringExtra("parent").indexOf(' ') + 1);
         final String title = getIntent().getStringExtra("title");
-        Log.i("title", title);
 
-        Log.i("childi: ", childPosition);
-        Log.i("groupi: ", groupPosition);
-
+        /*
         mDatabase.child(groupPosition).child(childPosition);
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -86,9 +92,10 @@ public class ViewRecordingStudent extends AppCompatActivity {
                 // Failed to read value
             }
         });
+        */
 
 
-        StorageReference fileReference = storageReference.child(groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
+        StorageReference fileReference = storageReference.child(parent + "/" + title  + "/" + "newvideo.3pg");
         Log.i("tryingit", "now");
         try {
             final File localFile = File.createTempFile("testing1", "3pg");
@@ -96,7 +103,6 @@ public class ViewRecordingStudent extends AppCompatActivity {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                     Log.i("successfulyeah", "whatev");
-                    mDatabase1.child("notify").child(title).setValue("hi");
                     resultVideo.setVideoURI(Uri.fromFile(localFile));
                     resultVideo.start();
                 }

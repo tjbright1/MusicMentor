@@ -98,6 +98,8 @@ public class MainTeacherActivity extends AppCompatActivity {
                     public boolean onChildClick(ExpandableListView parent, View v,
                                                 int groupPosition, int childPosition, long id) {
 
+
+
                         Log.i("change:", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
 
                         finish();
@@ -108,13 +110,15 @@ public class MainTeacherActivity extends AppCompatActivity {
                             intent.putExtra("groupPosition", Integer.toString(groupPosition));
                             intent.putExtra("childPosition", Integer.toString(childPosition));
                             intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+                            intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
                         } else {
                             Log.i("creating", "intent");
                             intent = new Intent(MainTeacherActivity.this, ViewRecordingTeacher.class);
                             intent.putExtra("groupPosition", Integer.toString(groupPosition));
                             intent.putExtra("childPosition", Integer.toString(childPosition));
                             intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
-                            Log.i("Done","putting");
+                            intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+
                         }
                         Log.i("starting","activity");
                         startActivity(intent);

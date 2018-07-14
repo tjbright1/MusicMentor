@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.i("change:", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
                         Log.i("ASDF", "JKL:");
+
                         finish();
                         Intent intent;
                         Log.v("parent: ", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
@@ -86,11 +87,13 @@ public class MainActivity extends AppCompatActivity {
                             intent = new Intent(MainActivity.this, NewVideoStudent.class);
                             intent.putExtra("groupPosition", Integer.toString(groupPosition));
                             intent.putExtra("childPosition", Integer.toString(childPosition));
+                            intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
                             intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
                         } else {
                             intent = new Intent(MainActivity.this, ViewRecordingStudent.class);
                             intent.putExtra("groupPosition", Integer.toString(groupPosition));
                             intent.putExtra("childPosition", Integer.toString(childPosition));
+                            intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
                             intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
                         }
                         Log.v("childPosition", Integer.toString(childPosition));

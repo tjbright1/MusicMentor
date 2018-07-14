@@ -93,7 +93,7 @@ public class NewVideoStudent extends Activity {
             final String parent = getIntent().getStringExtra("parent").substring(getIntent().getStringExtra("parent").indexOf(' ') + 1);
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-            videoRef = storageRef.child("/" + groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
+            videoRef = storageRef.child("/" + parent + "/" + recordingTitle.getText().toString() + "/" + "newvideo.3pg");
             UploadTask uploadTask = videoRef.putFile(videoUri);
 
 // Register observers to listen for when the download is done or if it fails
@@ -109,11 +109,12 @@ public class NewVideoStudent extends Activity {
                     mDatabase.child("lessons").child("currentLesson").child("tasks").child(parent).child(recordingTitle.getText().toString()).setValue("Student");
                     mDatabase.child("notify").child(recordingTitle.getText().toString()).setValue("Teacher");
 
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
                     finish();
                     Intent intent = new Intent(NewVideoStudent.this, MainActivity.class);
                     startActivity(intent);
+
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
                     Log.v("tag","SUCCESS");
                 }
             });

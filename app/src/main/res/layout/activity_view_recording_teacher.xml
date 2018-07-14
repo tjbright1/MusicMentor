@@ -18,6 +18,26 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp" />
 
+    <EditText
+        android:id="@+id/videoFeedbackTeacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginStart="70dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Feedback" />
+
+    <Button
+        android:id="@+id/buttonFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/videoFeedbackTeacher"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-50dp"
+        android:text="Submit" />
 
 
 </RelativeLayout>

@@ -39,7 +39,8 @@ public class AddTaskActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String taskTitleToSave = taskTitle.getText().toString();
                 mDatabase.child("lessons").child("currentLesson").child("tasks").child(taskTitleToSave).setValue("taskinfo");
-                Intent i = new Intent(getApplicationContext(),MainTeacherActivity.class);
+                mDatabase.child("notify").child("tasks").child(taskTitleToSave).setValue("Notseen");
+                Intent i = new Intent(AddTaskActivity.this, MainTeacherActivity.class);
                 startActivity(i);
             }
         });
