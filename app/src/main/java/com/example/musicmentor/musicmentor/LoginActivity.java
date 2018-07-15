@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
-                    String value = dataSnapshot.child("users").child(user.getUid()).getValue(String.class);
+                    String value = dataSnapshot.child("users").child(user.getUid()).child("userType").getValue(String.class);
                     Log.v("VALUEOF", value);
                     if (value.equals("Student")) {
                         finish();
