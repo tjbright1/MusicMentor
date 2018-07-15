@@ -8,6 +8,13 @@
         <item>Both</item>
     </string-array>
 
+    <string-array name="instruments">
+        <item>Piano</item>
+        <item>Voice</item>
+        <item>Guitar</item>
+        <item>French Horn</item>
+    </string-array>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

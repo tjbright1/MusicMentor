@@ -28,9 +28,10 @@ import com.google.firebase.storage.StorageReference;
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     ProgressBar progressBar;
-    EditText editTextEmail, editTextPassword;
+    EditText editTextEmail, editTextPassword, name;
 
-    private Spinner spinner;
+    private Spinner spinner, instrument;
+
 
     private User user;
 
@@ -48,15 +49,25 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        name = (EditText) findViewById(R.id.name);
+
+        instrument = (Spinner) findViewById(R.id.instrument);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.instruments, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        instrument.setAdapter(adapter);
 
         spinner = (Spinner) findViewById(R.id.planets_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> adapterInstrument = ArrayAdapter.createFromResource(this,
                 R.array.planets_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(adapterInstrument);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -100,9 +111,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     // Store whether user is teacher or student in database
-                    String text = spinner.getSelectedItem().toString();
+                    String userType = spinner.getSelectedItem().toString();
+                    String instrumentType = instrument.getSelectedItem().toString();
+                    String nameText = name.getText().toString();
                     FirebaseUser user = task.getResult().getUser();
-                    writeNewUser(user.getUid(), user.getEmail(), text);
+                    writeNewUser(user.getUid(), user.getEmail(), userType, instrumentType, nameText);
                     finish();
                     startActivity(new Intent(SignupActivity.this, MainActivity.class));
                 } else {
@@ -134,9 +147,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void writeNewUser(String userId, String email, String type) {
+    private void writeNewUser(String userId, String email, String UserType, String InstrumentType, String name) {
         user = new User(email);
 
-        mDatabase.child("users").child(userId).setValue(type);
+        mDatabase.child("users").child(userId).child("userType").setValue(UserType);
+        mDatabase.child("users").child(userId).child("instrumentType").setValue(InstrumentType);
+        mDatabase.child("users").child(userId).child("name").setValue(name);
     }
 }
