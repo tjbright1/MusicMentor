@@ -60,31 +60,9 @@ public class NewVideoStudent extends Activity {
 
     private DatabaseReference mDatabase;
 
-
-    TextView task_1;
-    TextView video_1;
     Button button;
-    VideoView videoView;
     VideoView resultVideo;
     TextView feedback;
-    Button audioButton;
-    Button playButton;
-
-    private static final String LOG_TAG = "AudioRecordTest";
-
-    private MediaRecorder mRecorder = null;
-    private MediaPlayer mPlayer = null;
-
-    final int REQUEST_PERMISSION_CODE = 200;
-    private boolean permissionToRecord = false;
-    private String[] permissions = {RECORD_AUDIO};
-
-
-    private static String mFileName = null;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +70,6 @@ public class NewVideoStudent extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_new_video_student);
-
-        audioButton = (Button) findViewById((R.id.audioButton));
-        playButton = (Button) findViewById(R.id.playButton);
 
         button = (Button) findViewById(R.id.button);
         resultVideo = (VideoView) findViewById(R.id.videoView);
@@ -123,6 +98,8 @@ public class NewVideoStudent extends Activity {
             }
         });
     }
+
+
 
     public void dispatchTakeVideoIntent(View videoView) {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
