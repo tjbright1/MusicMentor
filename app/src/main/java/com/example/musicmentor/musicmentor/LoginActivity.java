@@ -24,12 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth mAuth;
     EditText editTextEmail, editTextPassword;
     ProgressBar progressBar;
-
+    public static String currEmail;
     private DatabaseReference mDatabase;
 
     @Override
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();
+        currEmail = email;
         String password = editTextPassword.getText().toString().trim();
 
         if (email.isEmpty()) {
