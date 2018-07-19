@@ -41,7 +41,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="424dp"
+            android:layout_height="531dp"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:paddingLeft="15dp"
@@ -71,6 +71,14 @@
                 android:background="@android:color/transparent"
                 app:srcCompat="@drawable/logout" />
 
+            <ImageButton
+                android:id="@+id/userPageB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_marginTop="42dp"
+                app:srcCompat="@drawable/person" />
+
 
         </LinearLayout>
 
@@ -82,16 +90,6 @@
             android:layout_centerVertical="true"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/teacherLesson"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical">
-
-        </LinearLayout>
     </RelativeLayout>
 
 
