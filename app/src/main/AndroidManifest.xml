@@ -32,7 +32,6 @@
             android:name=".VideoActivity"
             android:label="@string/title_activity_video"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".HomePageTeacher"
             android:label="@string/title_activity_home_page_teacher"
@@ -76,7 +75,8 @@
         <activity
             android:name=".ViewRecordingTeacher"
             android:label="@string/title_activity_view_recording_teacher"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UserPage"></activity>
     </application>
 
 </manifest>
