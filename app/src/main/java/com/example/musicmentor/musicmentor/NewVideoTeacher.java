@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -31,8 +32,10 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -51,12 +54,16 @@ public class NewVideoTeacher extends Activity {
     VideoView videoView;
     VideoView resultVideo;
     EditText recordingTitle;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("tag2", "activitycreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_video_teacher);
+
+        db = FirebaseFirestore.getInstance();
+
 
 
         button = (ImageButton) findViewById(R.id.buttonTeacher);
@@ -105,14 +112,29 @@ public class NewVideoTeacher extends Activity {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    // Add a new document with a generated ID
+                    Map<String, Object> recording = new HashMap<>();
+                    recording.put("title", recordingTitle.getText().toString());
+                    recording.put("task", parent);
+
+                    String userGroupId = ((MyApplication) getApplication()).getGroupId();
+                    db.collection("userGroups").document(userGroupId).collection("recordings").document()
+                            .set(recording)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    finish();
+                                    Intent intent = new Intent(NewVideoTeacher.this, MainTeacherActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+
+
+
                     mDatabase = FirebaseDatabase.getInstance().getReference();
                     mDatabase.child("lessons").child("currentLesson").child("tasks").child(parent).child(recordingTitle.getText().toString()).setValue("Teacher");
                     mDatabase.child("notify").child(recordingTitle.getText().toString()).setValue("Student");
-
-                    finish();
-                    Intent intent = new Intent(NewVideoTeacher.this, MainTeacherActivity.class);
-                    startActivity(intent);
-
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                     // ...
                     Log.v("tag","SUCCESS");

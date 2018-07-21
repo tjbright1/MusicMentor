@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +25,12 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,10 +46,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private FirebaseAuth mAuth;
 
+    FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        // Access a Cloud Firestore instance from your Activity
+
+        db = FirebaseFirestore.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -116,8 +129,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     String nameText = name.getText().toString();
                     FirebaseUser user = task.getResult().getUser();
                     writeNewUser(user.getUid(), user.getEmail(), userType, instrumentType, nameText);
-                    finish();
-                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
                 } else {
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -150,8 +161,21 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void writeNewUser(String userId, String email, String UserType, String InstrumentType, String name) {
         user = new User(email);
 
-        mDatabase.child("users").child(userId).child("userType").setValue(UserType);
-        mDatabase.child("users").child(userId).child("instrumentType").setValue(InstrumentType);
-        mDatabase.child("users").child(userId).child("name").setValue(name);
-    }
+        // Create a new user with a first and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("userType", UserType);
+        user.put("instrument", InstrumentType);
+        user.put("name", name);
+        user.put("userGroupId", "SHV9e03KmJUpEV9jKFAF");
+
+        // Add a new document with a generated ID
+        db.collection("users").document(userId).set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        finish();
+                        startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                    }
+                });
+        }
 }
