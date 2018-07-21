@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -16,11 +17,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserPage extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();;
-    private DatabaseReference mDatabase;
+    private FirebaseFirestore db;
     private FirebaseUser user;
 
     TextView nameEdit, emailEdit, UTEdit, instrumentEdit;
@@ -39,7 +43,7 @@ public class UserPage extends AppCompatActivity {
         UTEdit = (TextView) findViewById(R.id.UTEdit);
         instrumentEdit = (TextView) findViewById(R.id.InstrumentEdit);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
 
         updateFields();
         Button logout = (Button) findViewById(R.id.UPLog);
@@ -55,28 +59,23 @@ public class UserPage extends AppCompatActivity {
 
     private void updateFields()
     {
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String UT = dataSnapshot.child("users").child(user.getUid()).child("userType").getValue(String.class);
-                String IT = dataSnapshot.child("users").child(user.getUid()).child("instrumentType").getValue(String.class);
-                String name = dataSnapshot.child("users").child(user.getUid()).child("name").getValue(String.class);
+        DocumentReference ref = db.collection("users").document(user.getUid().toString());
+        ref.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String userType = (String) documentSnapshot.get("userType");
+                            String IT = (String) documentSnapshot.get("instrument");
+                            String name = (String) documentSnapshot.get("name");
+                            UTEdit.setText(userType);
+                            instrumentEdit.setText(IT);
+                            nameEdit.setText(name);
+                            emailEdit.setText(LoginActivity.currEmail);
 
-                UTEdit.setText(UT);
-                instrumentEdit.setText(IT);
-                nameEdit.setText(name);
-                emailEdit.setText(LoginActivity.currEmail);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
+                        }
+                    }
+                });
     }
-
-
 
 }
