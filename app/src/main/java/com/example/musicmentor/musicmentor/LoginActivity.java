@@ -16,9 +16,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,6 +47,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText editTextEmail, editTextPassword;
     ProgressBar progressBar;
 
+    private boolean videoRecordingSelected;
+
+    // DROPDOWN COMPENENTS
+//    private Spinner dropdown;
+    private Button selectRecordForm;
+
     private DatabaseReference mDatabase;
 
     private Button record;
@@ -51,16 +61,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private MediaRecorder mediaRecorder;
     private String outputFile;
 
-    final int SAMPLE_RATE = 44100; // The sampling rate
-    boolean mShouldContinue; // Indicates if recording / playback should stop
-
-    private static final String LOG_TAG = "AudioRecordTest";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        /*
+        DROPDOWN STUFF
+         */
+//        dropdown = findViewById(R.id.spinner);
+//        String[] items = new String[]{"Video", "Audio"};
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+//        dropdown.setAdapter(adapter);
+//        videoRecordingSelected = false;
+
+        selectRecordForm = (Button) findViewById(R.id.btnSwitchMethod);
+        videoRecordingSelected = false;
+
+        /*
+        EVERYTHING ELSE
+         */
         mAuth = FirebaseAuth.getInstance();
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
@@ -145,10 +166,97 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                mediaPlayer.release();
             }
         });
+
+        selectRecordForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoRecordingSelected = !videoRecordingSelected;
+                Toast.makeText(getApplicationContext(), "" + videoRecordingSelected, Toast.LENGTH_LONG).show();
+                if (videoRecordingSelected) {
+                    onVideoSelect();
+                    selectRecordForm.setText("Use Audio");
+                } else {
+                    onAudioSelect();
+                    selectRecordForm.setText("Use Video");
+                }
+            }
+        });
+
+        // hide until selected
+//        playAudio.setVisibility(View.GONE);
+//        record.setVisibility(View.GONE);
+//        stopAudio.setVisibility(View.GONE);
+
+//        onVideoSelect();
+
+
+
+        // set up dropdown
+//        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                switch (i) {
+//                    case 1: // video
+//                        Toast.makeText(getApplicationContext(), "You have chosen video", Toast.LENGTH_SHORT).show();
+//                        playAudio.setVisibility( playAudio.isShown() ?
+//                                View.GONE: View.GONE);
+//                        stopAudio.setVisibility(View.GONE);
+//                        record.setVisibility(View.GONE);
+//                        editTextEmail.setVisibility(View.GONE);
+//
+//                    case 0: // audio
+//                        Toast.makeText(getApplicationContext(), "You have chosen audio", Toast.LENGTH_SHORT).show();
+//                        playAudio.setVisibility(View.VISIBLE);
+//                        stopAudio.setVisibility(View.VISIBLE);
+//                        record.setVisibility(View.VISIBLE);
+//                        editTextEmail.setVisibility(View.VISIBLE);
+//
+//                }
+
+//                if (adapterView.getItemAtPosition(i).toString() == "video") {
+//                    Toast.makeText(getApplicationContext(), "You have chosen video", Toast.LENGTH_SHORT).show();
+//                    videoRecordingSelected = true;
+//                    onVideoSelect();
+//
+//                } else if (adapterView.getItemAtPosition(i).toString() == "audio") {
+//                    Toast.makeText(getApplicationContext(), "You have chosen audio", Toast.LENGTH_SHORT).show();
+//                    videoRecordingSelected = false;
+//
+//                    onAudioSelect();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+
     }
 
-    public void setUpFolder() {
+    public void onAudioSelect() {
+        if (!playAudio.isShown()) {
+            playAudio.setVisibility(View.VISIBLE);
+        }
+        if (!stopAudio.isShown()) {
+            stopAudio.setVisibility(View.VISIBLE);
+        }
+        if (!record.isShown()) {
+            record.setVisibility(View.VISIBLE);
+        }
+    }
 
+    public void onVideoSelect() {
+        if (playAudio.isShown()) {
+            playAudio.setVisibility(View.GONE);
+        }
+        if (stopAudio.isShown()) {
+            stopAudio.setVisibility(View.GONE);
+        }
+        if (record.isShown()) {
+            record.setVisibility(View.GONE);
+        }
     }
 
     public void onRecordBtnClicked(MediaRecorder mediaRecorder) {
