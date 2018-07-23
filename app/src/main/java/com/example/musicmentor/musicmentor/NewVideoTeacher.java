@@ -2,9 +2,14 @@ package com.example.musicmentor.musicmentor;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,12 +47,24 @@ public class NewVideoTeacher extends Activity {
 
     private DatabaseReference mDatabase;
 
+    // DROPDOWN COMPENENTS
+    private boolean videoRecordingSelected;
+    private Button selectRecordForm;;
+
+    // AUDIO COMPONENTS
+    private Button record;
+    private Button playAudio;
+    private Button stopAudio;
+    private MediaRecorder mediaRecorder;
+    private String outputFile;
+
 
     TextView task_1;
     TextView video_1;
     VideoView videoView;
     VideoView resultVideo;
     EditText feedback;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +72,23 @@ public class NewVideoTeacher extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_video_teacher);
 
+        /**
+         * DROPDOWN STUFF
+         */
+        videoRecordingSelected = true;
+        selectRecordForm = (Button) findViewById(R.id.btnSwitchRecordingMethod);
+
+        /**
+         * VIDEO STUFF
+         */
+
         resultVideo = (VideoView) findViewById(R.id.videoViewTeacher);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         feedback = (EditText) findViewById(R.id.videoFeedbackTeacher);
 
-        Button button = (Button) findViewById(R.id.buttonFeedback);
+        button = (Button) findViewById(R.id.buttonFeedback);
         button.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {
                 String childPosition = getIntent().getStringExtra("childPosition");
@@ -99,6 +126,150 @@ public class NewVideoTeacher extends Activity {
             //Toast.makeText(getContext(),"Button working",LENGTH_SHORT).show();
         }
         catch (IOException ioe){
+        }
+
+        /**
+         * AUDIO STUFF
+         */
+        playAudio = (Button) findViewById(R.id.btnPlayAudio);
+        record = (Button) findViewById(R.id.btnRecordAudio);
+        stopAudio = (Button) findViewById(R.id.btnStopAudio);
+        playAudio.setEnabled(false);
+        stopAudio.setEnabled(false);
+
+        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3pg";
+
+//        outputFile = Environment.getExternalStorageDirectory() +"/Android/data/" + this.getApplicationContext().getPackageName();
+
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(outputFile);
+
+
+        record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRecordBtnClicked(mediaRecorder);
+            }
+        });
+
+        stopAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    mediaRecorder.stop();
+                } catch (IllegalStateException ise) {
+                    ise.printStackTrace();
+                }
+
+                mediaRecorder.release();
+//                mediaRecorder = null;
+                record.setEnabled(true);
+                stopAudio.setEnabled(false);
+                playAudio.setEnabled(true);
+                Toast.makeText(getApplicationContext(), "Stopping...", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        playAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MediaPlayer mediaPlayer = new MediaPlayer();
+                try {
+                    mediaPlayer.setDataSource(outputFile);
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                    Toast.makeText(getApplicationContext(), "Playing...", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                }
+
+//                mediaPlayer.release();
+            }
+        });
+
+        /**
+         * RECORDING METHOD SELECTION STUFF
+         */
+
+        selectRecordForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoRecordingSelected = !videoRecordingSelected;
+                Toast.makeText(getApplicationContext(), "" + videoRecordingSelected, Toast.LENGTH_LONG).show();
+                if (videoRecordingSelected) {
+                    onVideoSelect();
+                    selectRecordForm.setText("Use Audio");
+                } else {
+                    onAudioSelect();
+                    selectRecordForm.setText("Use Video");
+                }
+            }
+        });
+    }
+
+    public void onRecordBtnClicked(MediaRecorder mediaRecorder) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO},
+                    0);
+        } else {
+            recordAudio(mediaRecorder);
+        }
+    }
+
+    public void recordAudio(MediaRecorder mediaRecorder) {
+
+        try {
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+        } catch (IllegalStateException ise) {
+            System.out.println(ise);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        record.setEnabled(false);
+        stopAudio.setEnabled(true);
+
+        Toast.makeText(getApplicationContext(), "Recording...", Toast.LENGTH_LONG).show();
+    }
+
+    public void onAudioSelect() {
+        if (button.isShown()) {
+            button.setVisibility(View.GONE);
+        }
+        if (resultVideo.isShown()) {
+            resultVideo.setVisibility(View.GONE);
+        }
+
+        if (!playAudio.isShown()) {
+            playAudio.setVisibility(View.VISIBLE);
+        }
+        if (!stopAudio.isShown()) {
+            stopAudio.setVisibility(View.VISIBLE);
+        }
+        if (!record.isShown()) {
+            record.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void onVideoSelect() {
+        if (!button.isShown()) {
+            button.setVisibility(View.VISIBLE);
+        }
+        if (!resultVideo.isShown()) {
+            resultVideo.setVisibility(View.VISIBLE);
+        }
+
+        if (playAudio.isShown()) {
+            playAudio.setVisibility(View.GONE);
+        }
+        if (stopAudio.isShown()) {
+            stopAudio.setVisibility(View.GONE);
+        }
+        if (record.isShown()) {
+            record.setVisibility(View.GONE);
         }
     }
 
