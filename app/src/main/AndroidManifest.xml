@@ -89,6 +89,14 @@
         <activity
             android:name=".SearchForTeacherResultActivity"
             android:label="@string/title_activity_search_for_teacher_result"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DisplaySelectedProfileActivity"
+            android:label="@string/title_activity_display_selected_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchForStudentAcitivty"
+            android:label="@string/title_activity_search_for_student_acitivty"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

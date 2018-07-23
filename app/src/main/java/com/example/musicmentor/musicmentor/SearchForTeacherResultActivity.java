@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class SearchForTeacherResultActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private List<String> namesList;
     private ListView listView;
+    private ArrayList<Users> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class SearchForTeacherResultActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         listView = findViewById(R.id.listView);
         namesList = new ArrayList<>();
+        users = new ArrayList<>();
 
         Intent intent = getIntent();
         String highPrice = intent.getStringExtra("highPrice");
@@ -74,8 +77,12 @@ public class SearchForTeacherResultActivity extends AppCompatActivity {
                             String age = snapshot.getString("age");
                             String playingLevel = snapshot.getString("playingLevel");
                             String price = snapshot.getString("price");
+                            String credentials = snapshot.getString("credentials");
+
                             String instrument = snapshot.getString("instrument");
                             namesList.add(snapshot.getString("name") + "      Price: " + price + "      Instrument: " + instrument + "      Level: " + playingLevel);
+                            Users user = new Users(name, credentials, age, price, "Teacher", playingLevel, instrument);
+                            users.add(user);
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_selectable_list_item, namesList) {
                             @Override
@@ -100,6 +107,25 @@ public class SearchForTeacherResultActivity extends AppCompatActivity {
                 }
             });
         }
+
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Object o = listView.getItemAtPosition(i);
+                //String item = o.toString();
+                finish();
+                Users user = users.get(i);
+                Intent intent = new Intent(SearchForTeacherResultActivity.this, DisplaySelectedProfileActivity.class);
+                intent.putExtra("name", user.getName());
+                intent.putExtra("age", user.getAge());
+                intent.putExtra("credentials", user.getCredentials());
+                intent.putExtra("playingLevel", user.getLevel());
+                intent.putExtra("price", user.getPrice());
+                intent.putExtra("instrument", user.getInstrument());
+                startActivity(intent);
+            }
+        });
     }
 
 

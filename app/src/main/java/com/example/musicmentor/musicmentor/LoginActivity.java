@@ -110,6 +110,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     if (documentSnapshot.exists()) {
                                         String userType = (String) documentSnapshot.get("userType");
                                         String userGroupId = (String) documentSnapshot.get("userGroupId");
+                                        String username = (String) documentSnapshot.get("name");
+                                        ((MyApplication) getApplication()).setUsername(username);
                                         ((MyApplication) getApplication()).setGroupId(userGroupId);
                                         if (userType.equals("Student")) {
                                             Log.v("Instudent", "Now");
@@ -149,6 +151,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (documentSnapshot.exists()) {
                                 String userType = (String) documentSnapshot.get("userType");
                                 String userGroupId = (String) documentSnapshot.get("userGroupId");
+                                String username = (String) documentSnapshot.get("name");
+                                ((MyApplication) getApplication()).setUsername(username);
                                 ((MyApplication) getApplication()).setGroupId(userGroupId);
                                 if (userType.equals("Student")) {
                                     Log.v("Instudent", "Now");

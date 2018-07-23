@@ -49,4 +49,6 @@
     <string name="title_activity_teacher_signup">TeacherSignupActivity</string>
     <string name="title_activity_search_for_teacher">SearchForTeacherActivity</string>
     <string name="title_activity_search_for_teacher_result">SearchForTeacherResultActivity</string>
+    <string name="title_activity_display_selected_profile">DisplaySelectedProfileActivity</string>
+    <string name="title_activity_search_for_student_acitivty">SearchForStudentAcitivty</string>
 </resources>
