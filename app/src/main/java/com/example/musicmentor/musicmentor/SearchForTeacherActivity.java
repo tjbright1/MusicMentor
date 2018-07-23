@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 public class SearchForTeacherActivity extends AppCompatActivity {
 
-    private EditText lowPrice;
     private EditText highPrice;
     private TextView price;
     private Button submit;
@@ -30,7 +29,6 @@ public class SearchForTeacherActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        lowPrice = findViewById(R.id.editText5);
         highPrice = findViewById(R.id.editText3);
         price = findViewById(R.id.textView9);
         submit = findViewById(R.id.button3);
@@ -59,7 +57,6 @@ public class SearchForTeacherActivity extends AppCompatActivity {
             public void onClick(View view) {
                 finish();
                 Intent intent = new Intent(SearchForTeacherActivity.this, SearchForTeacherResultActivity.class);
-                intent.putExtra("lowPrice", lowPrice.getText().toString());
                 intent.putExtra("highPrice", highPrice.getText().toString());
                 intent.putExtra("instrument", instrumentSpinner.getSelectedItem().toString());
                 intent.putExtra("level", levelSpinner.getSelectedItem().toString());

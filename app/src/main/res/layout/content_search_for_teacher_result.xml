@@ -14,10 +14,11 @@
         android:layout_height="match_parent"
         tools:context=".CardViewActivity">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
+
+        <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:id="@+id/listView"/>
 
     </RelativeLayout></android.support.constraint.ConstraintLayout>

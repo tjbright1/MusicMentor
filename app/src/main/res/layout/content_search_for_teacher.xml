@@ -15,33 +15,20 @@
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="100dp"
-        android:text="Price Range:"
+        android:text="Asking price:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editText3"
-        android:layout_width="61dp"
+        android:layout_width="140dp"
         android:layout_height="46dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginStart="80dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="85dp"
         android:ems="10"
+        android:hint="Max Per Week:"
         android:inputType="textEmailAddress"
-        android:hint="High:"
-        app:layout_constraintStart_toEndOf="@+id/editText5"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editText5"
-        android:layout_width="61dp"
-        android:layout_height="46dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="85dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:hint="Low:"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="parent" />
 
