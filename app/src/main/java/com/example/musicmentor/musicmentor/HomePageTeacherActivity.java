@@ -41,6 +41,14 @@ public class HomePageTeacherActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton userPage = (ImageButton) findViewById(R.id.userPageButton);
+        userPage.setOnClickListener (new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),UserPage.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 }

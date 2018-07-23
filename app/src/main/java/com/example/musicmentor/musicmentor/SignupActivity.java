@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,14 +25,20 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     ProgressBar progressBar;
-    EditText editTextEmail, editTextPassword;
+    EditText editTextEmail, editTextPassword, name;
 
-    private Spinner spinner;
+    private Spinner spinner, instrument;
+
 
     private User user;
 
@@ -38,25 +46,41 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private FirebaseAuth mAuth;
 
+    FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        // Access a Cloud Firestore instance from your Activity
+
+        db = FirebaseFirestore.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        name = (EditText) findViewById(R.id.name);
+
+        instrument = (Spinner) findViewById(R.id.instrument);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.instruments, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        instrument.setAdapter(adapter);
 
         spinner = (Spinner) findViewById(R.id.planets_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> adapterInstrument = ArrayAdapter.createFromResource(this,
                 R.array.planets_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(adapterInstrument);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -100,11 +124,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     // Store whether user is teacher or student in database
-                    String text = spinner.getSelectedItem().toString();
+                    String userType = spinner.getSelectedItem().toString();
+                    String instrumentType = instrument.getSelectedItem().toString();
+                    String nameText = name.getText().toString();
                     FirebaseUser user = task.getResult().getUser();
-                    writeNewUser(user.getUid(), user.getEmail(), text);
-                    finish();
-                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                    writeNewUser(user.getUid(), user.getEmail(), userType, instrumentType, nameText);
                 } else {
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -134,9 +158,34 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void writeNewUser(String userId, String email, String type) {
+    private void writeNewUser(final String userId, String email, final String UserType, String InstrumentType, String name) {
         user = new User(email);
 
-        mDatabase.child("users").child(userId).setValue(type);
-    }
+        // Create a new user with a first and last name
+        Map<String, Object> user = new HashMap<>();
+        user.put("userType", UserType);
+        user.put("instrument", InstrumentType);
+        user.put("name", name);
+        user.put("userGroupId", "SHV9e03KmJUpEV9jKFAF");
+        if (UserType.equals("Teacher")) {
+            finish();
+            Intent intent = new Intent(SignupActivity.this, TeacherSignupActivity.class);
+            intent.putExtra("userId", userId);
+            intent.putExtra("instrument", InstrumentType);
+            intent.putExtra("name", name);
+            startActivity(intent);
+        } else {
+
+            // Add a new document with a generated ID
+            db.collection("users").document(userId).set(user)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            finish();
+                            Intent intent = new Intent(SignupActivity.this, HomePageStudentActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+        }
+        }
 }

@@ -3,24 +3,36 @@ package com.example.musicmentor.musicmentor;
 import java.util.HashMap;
 import java.util.List;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> expandableListTitle;
     private HashMap<String, List<String>> expandableListDetail;
+    private static DatabaseReference mDatabase;
+    private static DatabaseReference mDatabase1;
+    private String check;
 
     public CustomExpandableListAdapter(Context context, List<String> expandableListTitle,
-                                       HashMap<String, List<String>> expandableListDetail) {
+                                       HashMap<String, List<String>> expandableListDetail, String check) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
+        this.check = check;
     }
 
     @Override
@@ -43,9 +55,25 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_item, null);
         }
-        TextView expandedListTextView = (TextView) convertView
+        final TextView expandedListTextView = (TextView) convertView
                 .findViewById(R.id.expandedListItem);
-        expandedListTextView.setText(expandedListText);
+        mDatabase = FirebaseDatabase.getInstance().getReference("notify/" + expandedListText);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null && dataSnapshot.getValue().toString().equals(check)) {
+                    expandedListTextView.setTextColor(Color.GREEN);
+                } else {
+                    expandedListTextView.setTextColor(Color.BLACK);
+                }
+                expandedListTextView.setText(expandedListText);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         return convertView;
     }
 
@@ -73,15 +101,33 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String listTitle = (String) getGroup(listPosition);
+        final String listTitle = (String) getGroup(listPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_group, null);
         }
-        TextView listTitleTextView = (TextView) convertView
+        final TextView listTitleTextView = (TextView) convertView
                 .findViewById(R.id.listTitle);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
+        Log.i("listtitle:", listTitle);
+        /*mDatabase = FirebaseDatabase.getInstance().getReference("notify/tasks/" + listTitle.substring(listTitle.indexOf(' ') + 1));
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null && dataSnapshot.getValue().toString().equals("Notseen")) {
+                    listTitleTextView.setTextColor(Color.GREEN);
+                    mDatabase1 = FirebaseDatabase.getInstance().getReference();
+                    mDatabase1.child("notify").child("tasks").child(listTitle.substring(listTitle.indexOf(' ') + 1)).setValue("Seen");
+                }
+                listTitleTextView.setText(listTitle);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
         listTitleTextView.setText(listTitle);
         return convertView;
     }

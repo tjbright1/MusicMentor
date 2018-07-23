@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -32,11 +34,13 @@ import java.io.*;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,9 +49,14 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.jar.*;
+=======
+import java.util.Map;
+>>>>>>> cb134efeeeeb82dfa93826ffe8fb693e5f7617a8
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.app.Activity.RESULT_OK;
@@ -60,15 +69,27 @@ public class NewVideoStudent extends Activity {
 
     private DatabaseReference mDatabase;
 
+<<<<<<< HEAD
     Button button;
+=======
+
+    TextView task_1;
+    TextView video_1;
+    ImageButton button;
+    VideoView videoView;
+>>>>>>> cb134efeeeeb82dfa93826ffe8fb693e5f7617a8
     VideoView resultVideo;
-    TextView feedback;
+    EditText recordingTitle;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("tag2", "activitycreate");
         super.onCreate(savedInstanceState);
 
+<<<<<<< HEAD
         setContentView(R.layout.activity_new_video_student);
 
         button = (Button) findViewById(R.id.button);
@@ -78,25 +99,16 @@ public class NewVideoStudent extends Activity {
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+=======
+        db = FirebaseFirestore.getInstance();
 
-        final String childPosition = getIntent().getStringExtra("childPosition");
-        final String groupPosition = getIntent().getStringExtra("groupPosition");
+>>>>>>> cb134efeeeeb82dfa93826ffe8fb693e5f7617a8
 
-        mDatabase.child(groupPosition).child(childPosition);
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.child(groupPosition).child(childPosition).getValue(String.class);
-                feedback.setText(value);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
+        button = (ImageButton) findViewById(R.id.button);
+        resultVideo = (VideoView) findViewById(R.id.videoView);
+
+        recordingTitle = (EditText) findViewById(R.id.recordingTitle);
     }
 
 
@@ -121,11 +133,12 @@ public class NewVideoStudent extends Activity {
             //Upload file to firebase
             //Uri file = Uri.fromFile(new File(videoUri.toString()));
 
-            String childPosition = getIntent().getStringExtra("childPosition");
-            String groupPosition = getIntent().getStringExtra("groupPosition");
+            final String childPosition = getIntent().getStringExtra("childPosition");
+            final String groupPosition = getIntent().getStringExtra("groupPosition");
+            final String parent = getIntent().getStringExtra("parent").substring(getIntent().getStringExtra("parent").indexOf(' ') + 1);
 
             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-            videoRef = storageRef.child("/" + groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
+            videoRef = storageRef.child("/" + parent + "/" + recordingTitle.getText().toString() + "/" + "newvideo.3pg");
             UploadTask uploadTask = videoRef.putFile(videoUri);
 
 // Register observers to listen for when the download is done or if it fails
@@ -137,6 +150,22 @@ public class NewVideoStudent extends Activity {
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    // Add a new document with a generated ID
+                    Map<String, Object> recording = new HashMap<>();
+                    recording.put(recordingTitle.getText().toString(), "recording");
+
+                    String userGroupId = ((MyApplication) getApplication()).getGroupId();
+                    db.collection("userGroups").document(userGroupId).collection("tasks").document()
+                            .set(recording)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    finish();
+                                    Intent i = new Intent(NewVideoStudent.this, MainActivity.class);
+                                    startActivity(i);
+                                }
+                            });
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                     // ...
                     Log.v("tag","SUCCESS");

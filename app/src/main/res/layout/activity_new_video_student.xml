@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -10,32 +11,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.musicmentor.musicmentor.NewVideoStudent">
 
+    <EditText
+        android:id="@+id/recordingTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:hint="Recording Title"
+        android:inputType="textEmailAddress"
+        android:paddingBottom="15dp"
+        android:textColorHint="@color/black" />
+
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="wrap_content"
         android:layout_height="289dp"
-        android:layout_below="@+id/video_1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="99dp" />
+        android:layout_marginTop="150dp" />
 
-    <Button
-        android:text="RECORD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/video_1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp"
+    <ImageButton
         android:id="@+id/button"
-        android:onClick="dispatchTakeVideoIntent"/>
-
-    <TextView
-        android:id="@+id/videoFeedbackStudent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="98dp"
-        android:text="Feedback" />
+        android:layout_marginTop="50dp"
+        android:clickable="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/record"
+        android:onClick="dispatchTakeVideoIntent"/>
 
 
 </RelativeLayout>

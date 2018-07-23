@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,8 +47,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     FirebaseAuth mAuth;
     EditText editTextEmail, editTextPassword;
     ProgressBar progressBar;
-
+    public static String currEmail;
     private DatabaseReference mDatabase;
+    private FirebaseFirestore db;
+
+    PersistData mPersistData;
+
 
     private Button record;
     private Button playAudio;
@@ -62,6 +71,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+
+        db = FirebaseFirestore.getInstance();
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
@@ -191,6 +202,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();
+        currEmail = email;
         String password = editTextPassword.getText().toString().trim();
 
         if (email.isEmpty()) {
@@ -225,32 +237,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     final FirebaseUser user = mAuth.getCurrentUser();
-                    mDatabase.child("users").child(user.getUid());
-                    mDatabase.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            // This method is called once with the initial value and again
-                            // whenever data at this location is updated.
-                            String value = dataSnapshot.child("users").child(user.getUid()).getValue(String.class);
-                            Log.v("VALUEOF", value);
-                            if (value.equals("Student")) {
-                                Log.v("Instudent", "Now");
-                                finish();
-                                Intent intent = new Intent(LoginActivity.this, HomePageStudentActivity.class);
-                                startActivity(intent);
-                            } else if (value.equals("Teacher")) {
-                                Log.v("Inteacher", "Now");
-                                finish();
-                                Intent intent = new Intent(LoginActivity.this, HomePageTeacherActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed to read value
-                        }
-                    });
+                    Log.v("userid: ", user.getUid().toString());
+                    DocumentReference ref = db.collection("users").document(user.getUid().toString());
+                    ref.get()
+                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists()) {
+                                        String userType = (String) documentSnapshot.get("userType");
+                                        String userGroupId = (String) documentSnapshot.get("userGroupId");
+                                        ((MyApplication) getApplication()).setGroupId(userGroupId);
+                                        if (userType.equals("Student")) {
+                                            Log.v("Instudent", "Now");
+                                            finish();
+                                            Intent intent = new Intent(LoginActivity.this, HomePageStudentActivity.class);
+                                            intent.putExtra("userGroupId", userGroupId);
+                                            startActivity(intent);
+                                        } else if (userType.equals("Teacher")) {
+                                            Log.v("Inteacher", "Now");
+                                            finish();
+                                            Intent intent = new Intent(LoginActivity.this, HomePageTeacherActivity.class);
+                                            intent.putExtra("userGroupId", userGroupId);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                }
+                            });
                 } else {
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -265,30 +277,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (mAuth.getCurrentUser() != null) {
             final FirebaseUser user = mAuth.getCurrentUser();
-            mDatabase.child("users").child(user.getUid());
-            mDatabase.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
-                    String value = dataSnapshot.child("users").child(user.getUid()).getValue(String.class);
-                    Log.v("VALUEOF", value);
-                    if (value.equals("Student")) {
-                        finish();
-                        Intent intent = new Intent(LoginActivity.this, HomePageStudentActivity.class);
-                        startActivity(intent);
-                    } else if (value.equals("Teacher")) {
-                        finish();
-                        Intent intent = new Intent(LoginActivity.this, HomePageTeacherActivity.class);
-                        startActivity(intent);
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                }
-            });
+            DocumentReference ref = db.collection("users").document(user.getUid().toString());
+            ref.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                String userType = (String) documentSnapshot.get("userType");
+                                String userGroupId = (String) documentSnapshot.get("userGroupId");
+                                ((MyApplication) getApplication()).setGroupId(userGroupId);
+                                if (userType.equals("Student")) {
+                                    Log.v("Instudent", "Now");
+                                    finish();
+                                    Intent intent = new Intent(LoginActivity.this, HomePageStudentActivity.class);
+                                    startActivity(intent);
+                                } else if (userType.equals("Teacher")) {
+                                    Log.v("Inteacher", "Now");
+                                    finish();
+                                    Intent intent = new Intent(LoginActivity.this, HomePageTeacherActivity.class);
+                                    intent.putExtra("userGroupId", userGroupId);
+                                    startActivity(intent);
+                                }
+                            }
+                        }
+                    });
         }
     }
 

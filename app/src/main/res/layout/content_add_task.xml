@@ -13,14 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="280dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="sans-serif"
-        android:hint="email"
+        android:hint="Task Title:"
         android:inputType="textEmailAddress"
         android:paddingBottom="15dp"
-        android:text="Task Title"
         android:textColorHint="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/createTask"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/createTask"
