@@ -67,6 +67,8 @@ public class NewVideoStudent extends Activity {
 
     private StorageReference videoRef;
 
+    private StorageReference audioRef;
+
     private DatabaseReference mDatabase;
 
     private boolean videoRecordingSelected;
@@ -278,6 +280,32 @@ public class NewVideoStudent extends Activity {
         if (record.isShown()) {
             record.setVisibility(View.GONE);
         }
+    }
+
+    public void storeAudio() {
+        Uri audioUri = Uri.fromFile(new File(outputFile).getAbsoluteFile());
+
+        String childPosition = getIntent().getStringExtra("childPosition");
+        String groupPosition = getIntent().getStringExtra("groupPosition");
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        videoRef = storageRef.child("/" + groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
+        UploadTask uploadTask = videoRef.putFile(audioUri);
+
+// Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Log.v("tag","SUCCESS");
+            }
+        });
     }
 
     @Override

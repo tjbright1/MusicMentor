@@ -8,6 +8,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -26,6 +27,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +38,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private MediaRecorder mediaRecorder;
     private String outputFile;
 
+    private Button storeAudio;
+    private StorageReference audioRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +111,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         stopAudio = (Button) findViewById(R.id.btnStopAudio);
         playAudio.setEnabled(false);
         stopAudio.setEnabled(false);
+
+        storeAudio = (Button) findViewById(R.id.storeAudio);
 
         //Creating an internal directory
 
@@ -167,6 +177,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+        storeAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storeAudio();
+            }
+        });
+
         selectRecordForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,57 +199,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        // hide until selected
-//        playAudio.setVisibility(View.GONE);
-//        record.setVisibility(View.GONE);
-//        stopAudio.setVisibility(View.GONE);
+    }
 
-//        onVideoSelect();
+    public void storeAudio() {
+        Uri audioUri = Uri.fromFile(new File(outputFile).getAbsoluteFile());
 
+        String childPosition = getIntent().getStringExtra("childPosition");
+        String groupPosition = getIntent().getStringExtra("groupPosition");
 
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        audioRef = storageRef.child("/" + groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
+        UploadTask uploadTask = audioRef.putFile(audioUri);
 
-        // set up dropdown
-//        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                switch (i) {
-//                    case 1: // video
-//                        Toast.makeText(getApplicationContext(), "You have chosen video", Toast.LENGTH_SHORT).show();
-//                        playAudio.setVisibility( playAudio.isShown() ?
-//                                View.GONE: View.GONE);
-//                        stopAudio.setVisibility(View.GONE);
-//                        record.setVisibility(View.GONE);
-//                        editTextEmail.setVisibility(View.GONE);
-//
-//                    case 0: // audio
-//                        Toast.makeText(getApplicationContext(), "You have chosen audio", Toast.LENGTH_SHORT).show();
-//                        playAudio.setVisibility(View.VISIBLE);
-//                        stopAudio.setVisibility(View.VISIBLE);
-//                        record.setVisibility(View.VISIBLE);
-//                        editTextEmail.setVisibility(View.VISIBLE);
-//
-//                }
-
-//                if (adapterView.getItemAtPosition(i).toString() == "video") {
-//                    Toast.makeText(getApplicationContext(), "You have chosen video", Toast.LENGTH_SHORT).show();
-//                    videoRecordingSelected = true;
-//                    onVideoSelect();
-//
-//                } else if (adapterView.getItemAtPosition(i).toString() == "audio") {
-//                    Toast.makeText(getApplicationContext(), "You have chosen audio", Toast.LENGTH_SHORT).show();
-//                    videoRecordingSelected = false;
-//
-//                    onAudioSelect();
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
+// Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Log.v("tag", "SUCCESS");
+            }
+        });
     }
 
     public void onAudioSelect() {
