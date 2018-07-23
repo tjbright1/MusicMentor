@@ -67,8 +67,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private MediaRecorder mediaRecorder;
     private String outputFile;
 
-    private Button storeAudio;
-    private StorageReference audioRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         playAudio.setEnabled(false);
         stopAudio.setEnabled(false);
 
-        storeAudio = (Button) findViewById(R.id.storeAudio);
 
         //Creating an internal directory
 
@@ -177,12 +174,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        storeAudio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                storeAudio();
-            }
-        });
 
         selectRecordForm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,32 +191,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
 
     }
-
-    public void storeAudio() {
-        Uri audioUri = Uri.fromFile(new File(outputFile).getAbsoluteFile());
-
-        String childPosition = getIntent().getStringExtra("childPosition");
-        String groupPosition = getIntent().getStringExtra("groupPosition");
-
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        audioRef = storageRef.child("/" + groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
-        UploadTask uploadTask = audioRef.putFile(audioUri);
-
-// Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-                Log.v("tag", "SUCCESS");
-            }
-        });
-    }
+//
+//    public void storeAudio() {
+//        Uri audioUri = Uri.fromFile(new File(outputFile).getAbsoluteFile());
+//
+//        String childPosition = getIntent().getStringExtra("childPosition");
+//        String groupPosition = getIntent().getStringExtra("groupPosition");
+//
+//        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+//        audioRef = storageRef.child("/" + groupPosition + "/" + childPosition + "/" + "newvideo.3pg");
+//        UploadTask uploadTask = audioRef.putFile(audioUri);
+//
+//// Register observers to listen for when the download is done or if it fails
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle unsuccessful uploads
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+//                // ...
+//                Log.v("tag", "SUCCESS");
+//            }
+//        });
+//    }
 
     public void onAudioSelect() {
         if (!playAudio.isShown()) {

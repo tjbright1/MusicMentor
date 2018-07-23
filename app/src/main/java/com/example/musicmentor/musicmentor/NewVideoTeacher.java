@@ -97,6 +97,10 @@ public class NewVideoTeacher extends Activity {
                 String groupPosition = getIntent().getStringExtra("groupPosition");
                 mDatabase.child(groupPosition).child(childPosition).setValue(feedback.getText().toString());
 
+                if (!videoRecordingSelected) {
+                    storeAudio();
+                }
+
             }
         });
 
