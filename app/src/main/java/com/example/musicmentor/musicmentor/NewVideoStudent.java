@@ -52,11 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-<<<<<<< HEAD
-import java.util.jar.*;
-=======
 import java.util.Map;
->>>>>>> cb134efeeeeb82dfa93826ffe8fb693e5f7617a8
 
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.app.Activity.RESULT_OK;
@@ -69,15 +65,7 @@ public class NewVideoStudent extends Activity {
 
     private DatabaseReference mDatabase;
 
-<<<<<<< HEAD
-    Button button;
-=======
-
-    TextView task_1;
-    TextView video_1;
     ImageButton button;
-    VideoView videoView;
->>>>>>> cb134efeeeeb82dfa93826ffe8fb693e5f7617a8
     VideoView resultVideo;
     EditText recordingTitle;
     private FirebaseFirestore db;
@@ -89,20 +77,8 @@ public class NewVideoStudent extends Activity {
         Log.v("tag2", "activitycreate");
         super.onCreate(savedInstanceState);
 
-<<<<<<< HEAD
-        setContentView(R.layout.activity_new_video_student);
-
-        button = (Button) findViewById(R.id.button);
-        resultVideo = (VideoView) findViewById(R.id.videoView);
-
-        feedback = (TextView) findViewById(R.id.videoFeedbackStudent);
-
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-=======
         db = FirebaseFirestore.getInstance();
 
->>>>>>> cb134efeeeeb82dfa93826ffe8fb693e5f7617a8
 
 
         button = (ImageButton) findViewById(R.id.button);

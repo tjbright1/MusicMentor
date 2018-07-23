@@ -48,43 +48,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-<<<<<<< HEAD
-        final HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
-        mDatabase = FirebaseDatabase.getInstance().getReference("lessons/currentLesson/tasks");
-
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        List<String> task = new ArrayList<String>();
-                        Log.i("MyTag", child.getKey().toString());
-                        expandableListDetail.put("Task: " + child.getKey().toString(), task);
-                    }
-                }
-                expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-                expandableListAdapter = new CustomExpandableListAdapter(MainActivity.this, expandableListTitle, expandableListDetail);
-                expandableListView.setAdapter(expandableListAdapter);
-                expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-                    @Override
-                    public void onGroupExpand(int groupPosition) {
-                    }
-                });
-
-                expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-                    @Override
-                    public void onGroupCollapse(int groupPosition) {
-
-
-                    }
-                });
-=======
+//<<<<<<< HEAD
+//        final HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
+//        mDatabase = FirebaseDatabase.getInstance().getReference("lessons/currentLesson/tasks");
+//
+//        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.getValue() != null) {
+//                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+//                        List<String> task = new ArrayList<String>();
+//                        Log.i("MyTag", child.getKey().toString());
+//                        expandableListDetail.put("Task: " + child.getKey().toString(), task);
+//                    }
+//                }
+//                expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+//                expandableListAdapter = new CustomExpandableListAdapter(MainActivity.this, expandableListTitle, expandableListDetail);
+//                expandableListView.setAdapter(expandableListAdapter);
+//                expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+//
+//                    @Override
+//                    public void onGroupExpand(int groupPosition) {
+//                    }
+//                });
+//
+//                expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+//
+//                    @Override
+//                    public void onGroupCollapse(int groupPosition) {
+//
+//
+//                    }
+//                });
+//=======
         db = FirebaseFirestore.getInstance();
 
         final HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
->>>>>>> cb134efeeeeb82dfa93826ffe8fb693e5f7617a8
 
         final String userGroupId = ((MyApplication) getApplication()).getGroupId();
         Log.v("clifford", userGroupId);
