@@ -40,5 +40,46 @@
         android:src="@drawable/record"
         android:onClick="dispatchTakeVideoIntent"/>
 
+    <Button
+        android:id="@+id/btnRecordAudio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:text="record" />
+
+    <Button
+        android:id="@+id/btnStopAudio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnRecordAudio"
+        android:layout_centerHorizontal="true"
+        android:text="Stop" />
+
+    <Button
+        android:id="@+id/btnPlayAudio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/videoViewTeacher"
+        android:layout_alignTop="@+id/btnRecordAudio"
+        android:text="play" />
+
+    <Button
+        android:id="@+id/btnSwitchMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/recordingTitleTeacher"
+        android:layout_below="@+id/recordingTitleTeacher"
+        android:text="Use Audio" />
+
+    <Button
+        android:id="@+id/btnSubmitAudio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="74dp"
+        android:text="submit" />
+
 
 </RelativeLayout>

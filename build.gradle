@@ -4,11 +4,16 @@ buildscript {
     repositories {
         jcenter()
 //        google ()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+        google()
     }
     dependencies {
-//        classpath 'com.android.tools.build:gradle:4.4.0'
-        classpath 'com.android.tools.build:gradle:2.2.2'
-//        classpath 'com.android.tools.build:gradle:3.1.3'
+//        classpath 'com.android.tools.build:gradle:4.4'
+//        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:3.1.3'
         classpath 'com.google.gms:google-services:4.0.0'
 //        google()
 //        jcenter()
@@ -27,11 +32,16 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://maven.google.com' }
-//        google()
+        google()
 //        jcenter()
 //
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir

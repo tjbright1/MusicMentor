@@ -53,13 +53,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     PersistData mPersistData;
 
-
-    private Button record;
-    private Button playAudio;
-    private Button stopAudio;
-    private MediaRecorder mediaRecorder;
-    private String outputFile;
-
     final int SAMPLE_RATE = 44100; // The sampling rate
     boolean mShouldContinue; // Indicates if recording / playback should stop
 
@@ -87,13 +80,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Typeface typeface = Typeface.createFromAsset(getAssets(), "BebasNeueLight.ttf");
         button.setTypeface(typeface);
 
-        /** LET THE AUDIO BEGIN */
-        playAudio = (Button) findViewById(R.id.btnPlayAudio);
-        record = (Button) findViewById(R.id.btnRecordAudio);
-        stopAudio = (Button) findViewById(R.id.btnStopAudio);
-        playAudio.setEnabled(false);
-        stopAudio.setEnabled(false);
-
         //Creating an internal directory
 
         //Getting a file within the dir.
@@ -105,100 +91,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         //Use the stream as usual to write    into the file
 
-        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3pg";
-
-//        outputFile = Environment.getExternalStorageDirectory() +"/Android/data/" + this.getApplicationContext().getPackageName();
-
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(outputFile);
-
-
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRecordBtnClicked(mediaRecorder);
-            }
-        });
-
-        stopAudio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    mediaRecorder.stop();
-                } catch (IllegalStateException ise) {
-                    ise.printStackTrace();
-                }
-
-                mediaRecorder.release();
-//                mediaRecorder = null;
-                record.setEnabled(true);
-                stopAudio.setEnabled(false);
-                playAudio.setEnabled(true);
-                Toast.makeText(getApplicationContext(), "Stopping...", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        playAudio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                try {
-                    mediaPlayer.setDataSource(outputFile);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                    Toast.makeText(getApplicationContext(), "Playing...", Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                }
-
-//                mediaPlayer.release();
-            }
-        });
-    }
-
-    public void setUpFolder() {
 
     }
 
-    public void onRecordBtnClicked(MediaRecorder mediaRecorder) {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.RECORD_AUDIO},
-                    0);
-        } else {
-            recordAudio(mediaRecorder);
-        }
-    }
-
-    public void recordAudio(MediaRecorder mediaRecorder) {
-
-        try {
-            mediaRecorder.prepare();
-            mediaRecorder.start();
-        } catch (IllegalStateException ise) {
-            System.out.println(ise);
-        } catch (IOException ioe) {
-        ioe.printStackTrace();
-    }
-
-        record.setEnabled(false);
-        stopAudio.setEnabled(true);
-
-        Toast.makeText(getApplicationContext(), "Recording...", Toast.LENGTH_LONG).show();
-    }
-
-//    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-//                                                     @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 10) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                recordAudio(mediaRecorder);
-//            }else{
-//                //User denied Permission.
-//            }
-//        }
-//    }
 
     private void userLogin() {
         String email = editTextEmail.getText().toString().trim();

@@ -20,34 +20,6 @@
             android:layout_centerVertical="true"
             android:src="@drawable/logo" />
 
-        <Button
-            android:text="Record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="12dp"
-            android:id="@+id/btnRecordAudio" />
-
-        <Button
-            android:text="play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnRecordAudio"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="17dp"
-            android:id="@+id/btnPlayAudio" />
-
-        <Button
-            android:text="StopAudio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnPlayAudio"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/btnStopAudio" />
     </RelativeLayout>
 
 

@@ -80,78 +80,81 @@ public class MainTeacherActivity extends AppCompatActivity {
         final HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
 
         final String userGroupId = ((MyApplication) getApplication()).getGroupId();
-        db.collection("userGroups").document(userGroupId).collection("tasks")
-            .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (final DocumentSnapshot document: task.getResult()){
-                            List<String> taski = new ArrayList<String>();
-                            String taskTitle = (String) document.get("title");
-                            Map<String, Object> docs = document.getData();
-                            for (final String recording : docs.keySet()) {
-                                if (!recording.equals("title")) {
-                                    taski.add(recording);
+//        if (userGroupId) {
+            db.collection("userGroups").document(userGroupId).collection("tasks")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (final DocumentSnapshot document: task.getResult()){
+                                List<String> taski = new ArrayList<String>();
+                                String taskTitle = (String) document.get("title");
+                                Map<String, Object> docs = document.getData();
+                                for (final String recording : docs.keySet()) {
+                                    if (!recording.equals("title")) {
+                                        taski.add(recording);
+                                    }
                                 }
-                            }
-                            taski.add("Add New Recording +");
-                            expandableListDetail.put("Task: " + taskTitle, taski);
-                            expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-                            expandableListAdapter = new CustomExpandableListAdapter(MainTeacherActivity.this, expandableListTitle, expandableListDetail, "Teacher");
-                            expandableListView.setAdapter(expandableListAdapter);
-                            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                                taski.add("Add New Recording +");
+                                expandableListDetail.put("Task: " + taskTitle, taski);
+                                expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+                                expandableListAdapter = new CustomExpandableListAdapter(MainTeacherActivity.this, expandableListTitle, expandableListDetail, "Teacher");
+                                expandableListView.setAdapter(expandableListAdapter);
+                                expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
-                                @Override
-                                public void onGroupExpand(int groupPosition) {
-
-                                }
-                            });
-
-                            expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-                                @Override
-                                public void onGroupCollapse(int groupPosition) {
-
-
-                                }
-                            });
-
-                            expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-                                @Override
-                                public boolean onChildClick(ExpandableListView parent, View v,
-                                                            int groupPosition, int childPosition, long id) {
-
-
-
-                                    Log.i("change:", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
-
-                                    finish();
-                                    Intent intent;
-                                    Log.v("parent: ", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
-                                    if (parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString() == "Add New Recording +") {
-                                        intent = new Intent(MainTeacherActivity.this, NewVideoTeacher.class);
-                                        intent.putExtra("groupPosition", Integer.toString(groupPosition));
-                                        intent.putExtra("childPosition", Integer.toString(childPosition));
-                                        intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
-                                        intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
-                                    } else {
-                                        Log.i("creating", "intent");
-                                        intent = new Intent(MainTeacherActivity.this, ViewRecordingTeacher.class);
-                                        intent.putExtra("groupPosition", Integer.toString(groupPosition));
-                                        intent.putExtra("childPosition", Integer.toString(childPosition));
-                                        intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
-                                        intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+                                    @Override
+                                    public void onGroupExpand(int groupPosition) {
 
                                     }
-                                    Log.i("starting","activity");
-                                    startActivity(intent);
-                                    return false;
-                                }
-                            });
-                        }
-                    }
-                });
+                                });
 
-        }
+                                expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+                                    @Override
+                                    public void onGroupCollapse(int groupPosition) {
+
+
+                                    }
+                                });
+
+                                expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                                    @Override
+                                    public boolean onChildClick(ExpandableListView parent, View v,
+                                                                int groupPosition, int childPosition, long id) {
+
+
+
+                                        Log.i("change:", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
+
+                                        finish();
+                                        Intent intent;
+                                        Log.v("parent: ", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+                                        if (parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString() == "Add New Recording +") {
+                                            intent = new Intent(MainTeacherActivity.this, NewVideoTeacher.class);
+                                            intent.putExtra("groupPosition", Integer.toString(groupPosition));
+                                            intent.putExtra("childPosition", Integer.toString(childPosition));
+                                            intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+                                            intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
+                                        } else {
+                                            Log.i("creating", "intent");
+                                            intent = new Intent(MainTeacherActivity.this, ViewRecordingTeacher.class);
+                                            intent.putExtra("groupPosition", Integer.toString(groupPosition));
+                                            intent.putExtra("childPosition", Integer.toString(childPosition));
+                                            intent.putExtra("title", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
+                                            intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
+
+                                        }
+                                        Log.i("starting","activity");
+                                        startActivity(intent);
+                                        return false;
+                                    }
+                                });
+                            }
+                        }
+                    });
+
+//        } else { }
+    }
+
 
 }
