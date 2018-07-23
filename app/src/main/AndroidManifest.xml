@@ -77,7 +77,19 @@
             android:name=".ViewRecordingTeacher"
             android:label="@string/title_activity_view_recording_teacher"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UserPage"></activity>
+        <activity android:name=".UserPage" />
+        <activity
+            android:name=".TeacherSignupActivity"
+            android:label="@string/title_activity_teacher_signup"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchForTeacherActivity"
+            android:label="@string/title_activity_search_for_teacher"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchForTeacherResultActivity"
+            android:label="@string/title_activity_search_for_teacher_result"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

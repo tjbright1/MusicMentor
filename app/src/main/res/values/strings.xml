@@ -15,6 +15,13 @@
         <item>French Horn</item>
     </string-array>
 
+    <string-array name="levels">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </string-array>
+
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -39,4 +46,7 @@
     <string name="title_activity_add_task">AddTaskActivity</string>
     <string name="title_activity_view_recording_student">ViewRecordingStudent</string>
     <string name="title_activity_view_recording_teacher">ViewRecordingTeacher</string>
+    <string name="title_activity_teacher_signup">TeacherSignupActivity</string>
+    <string name="title_activity_search_for_teacher">SearchForTeacherActivity</string>
+    <string name="title_activity_search_for_teacher_result">SearchForTeacherResultActivity</string>
 </resources>

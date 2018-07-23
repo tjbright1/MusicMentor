@@ -158,7 +158,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void writeNewUser(String userId, String email, String UserType, String InstrumentType, String name) {
+    private void writeNewUser(final String userId, String email, final String UserType, String InstrumentType, String name) {
         user = new User(email);
 
         // Create a new user with a first and last name
@@ -167,15 +167,25 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         user.put("instrument", InstrumentType);
         user.put("name", name);
         user.put("userGroupId", "SHV9e03KmJUpEV9jKFAF");
+        if (UserType.equals("Teacher")) {
+            finish();
+            Intent intent = new Intent(SignupActivity.this, TeacherSignupActivity.class);
+            intent.putExtra("userId", userId);
+            intent.putExtra("instrument", InstrumentType);
+            intent.putExtra("name", name);
+            startActivity(intent);
+        } else {
 
-        // Add a new document with a generated ID
-        db.collection("users").document(userId).set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        finish();
-                        startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                    }
-                });
+            // Add a new document with a generated ID
+            db.collection("users").document(userId).set(user)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            finish();
+                            Intent intent = new Intent(SignupActivity.this, HomePageStudentActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+        }
         }
 }

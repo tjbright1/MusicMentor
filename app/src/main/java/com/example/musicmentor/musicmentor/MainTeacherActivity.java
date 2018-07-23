@@ -94,6 +94,7 @@ public class MainTeacherActivity extends AppCompatActivity {
                                     taski.add(recording);
                                 }
                             }
+                            taski.add("Add New Recording +");
                             expandableListDetail.put("Task: " + taskTitle, taski);
                             expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
                             expandableListAdapter = new CustomExpandableListAdapter(MainTeacherActivity.this, expandableListTitle, expandableListDetail, "Teacher");
