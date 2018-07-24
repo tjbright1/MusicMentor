@@ -270,14 +270,8 @@ public class NewVideoStudent extends Activity {
                             }
                         });
 
-
-                String recordingMethod = "video";
-                if (!videoRecordingSelected) {
-                    recordingMethod = "audio";
-                }
-
                 mDatabase = FirebaseDatabase.getInstance().getReference();
-                mDatabase.child("lessons").child("currentLesson").child("tasks").child(parent).child(recordingTitle.getText().toString() + recordingMethod).setValue("Teacher");
+                mDatabase.child("lessons").child("currentLesson").child("tasks").child(parent).child(recordingTitle.getText().toString()).setValue("Teacher");
                 mDatabase.child("notify").child(recordingTitle.getText().toString()).setValue("Student");
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                 // ...

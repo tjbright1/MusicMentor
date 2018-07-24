@@ -59,15 +59,16 @@ public class ViewRecordingTeacher extends AppCompatActivity {
         super.onBackPressed();  // optional depending on your needs
 
         /* Handle Audio */
-        try {
-            MediaPlayer player = new MediaPlayer();
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource("https://firebasestorage.googleapis.com/v0/b/fir-b9532.appspot.com/o/songs%2Fsong1.mp3?alt=media&token=a4424b28-93c3-4a0c-a6b9-9136dcf63335");
-            player.prepare();
-            player.start();
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+//        try {
+//            MediaPlayer player = new MediaPlayer();
+//            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//            player.setDataSource("https://firebasestorage.googleapis.com/v0/b/fir-b9532.appspot.com/o/songs%2Fsong1.mp3?alt=media&token=a4424b28-93c3-4a0c-a6b9-9136dcf63335");
+////            player.setDataSource("");
+//            player.prepare();
+//            player.start();
+//        } catch (Exception e) {
+//            // TODO: handle exception
+//        }
     }
 
 
