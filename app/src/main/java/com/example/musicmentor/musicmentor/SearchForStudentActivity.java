@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,6 +56,7 @@ public class SearchForStudentActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayList<Users> users;
     private FirebaseAuth mAuth;
+    private String hash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,10 @@ public class SearchForStudentActivity extends AppCompatActivity {
                 if (queryDocumentSnapshots != null) {
                     for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                         String name = snapshot.getString("name");
+                        String code = snapshot.getString("hash");
+                        Log.v("Setname", name);
                         namesList.add(name);
+                        hash = code;
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_selectable_list_item, namesList) {
                         @Override
@@ -115,9 +120,22 @@ public class SearchForStudentActivity extends AppCompatActivity {
                     builder = new AlertDialog.Builder(SearchForStudentActivity.this);
                 }
                 builder.setTitle("Request User")
-                        .setMessage("Are you sure you want to request this user?")
+                        .setMessage("Would you like to accept this user's request?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                Map<String, Object> useri = new HashMap<>();
+                                useri.put("userGroupId", hash);
+                                ((MyApplication) getApplication()).setGroupId(hash);
+                                db.collection("users").document(user.getUid().toString()).collection("userGroupIds").document().set(useri)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                finish();
+                                                Intent intent = new Intent(SearchForStudentActivity.this, HomePageTeacherActivity.class);
+                                                startActivity(intent);
+                                            }
+                                        });
+
                                 finish();
                                 Intent intent = new Intent(SearchForStudentActivity.this, MainTeacherActivity.class);
                                 startActivity(intent);

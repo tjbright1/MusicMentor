@@ -16,7 +16,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -36,6 +40,7 @@ public class DisplaySelectedProfileActivity extends AppCompatActivity {
     private TextView nameText, ageText, instrumentText, priceText, levelText, credentialsText;
     private Button request;
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,7 @@ public class DisplaySelectedProfileActivity extends AppCompatActivity {
         levelText = findViewById(R.id.textView28);
         credentialsText = findViewById(R.id.textView19);
         request = findViewById(R.id.button4);
+        mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         final String name = intent.getStringExtra("name");
@@ -100,12 +106,25 @@ public class DisplaySelectedProfileActivity extends AppCompatActivity {
                                                     Object request = new Object();
                                                     final String username = ((MyApplication) getApplication()).getUsername();
                                                     user.put("name", username);
-                                                    user.put("hash", "ASDFJKL;");
+                                                    final String hash = getSaltString();
+                                                    user.put("hash", hash);
                                                     setRef.set(user)
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
-
+                                                                    final FirebaseUser user = mAuth.getCurrentUser();
+                                                                    Map<String, Object> useri = new HashMap<>();
+                                                                    useri.put("userGroupId", hash);
+                                                                    db.collection("users").document(user.getUid()).collection("userGroupIds").document()
+                                                                            .set(useri)
+                                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void aVoid) {
+                                                                                    finish();
+                                                                                    Intent intent = new Intent(DisplaySelectedProfileActivity.this, HomePageStudentActivity.class);
+                                                                                    startActivity(intent);
+                                                                                }
+                                                                            });
                                                                 }
                                                             });
                                                 }
@@ -134,6 +153,19 @@ public class DisplaySelectedProfileActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
     }
 
 }

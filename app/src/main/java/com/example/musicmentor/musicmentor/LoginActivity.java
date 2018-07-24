@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -112,7 +113,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         String userGroupId = (String) documentSnapshot.get("userGroupId");
                                         String username = (String) documentSnapshot.get("name");
                                         ((MyApplication) getApplication()).setUsername(username);
-                                        ((MyApplication) getApplication()).setGroupId(userGroupId);
+                                        db.collection("users").document(user.getUid().toString()).collection("userGroupIds")
+                                                .get()
+                                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                        if (queryDocumentSnapshots != null) {
+                                                            for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                                                String userGroupId = snapshot.getString("userGroupId");
+                                                                ((MyApplication) getApplication()).setGroupId(userGroupId);
+                                                            }
+                                                        }
+                                                    }
+                                                });
                                         if (userType.equals("Student")) {
                                             Log.v("Instudent", "Now");
                                             finish();
@@ -153,7 +166,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 String userGroupId = (String) documentSnapshot.get("userGroupId");
                                 String username = (String) documentSnapshot.get("name");
                                 ((MyApplication) getApplication()).setUsername(username);
-                                ((MyApplication) getApplication()).setGroupId(userGroupId);
+                                db.collection("users").document(user.getUid().toString()).collection("userGroupIds")
+                                        .get()
+                                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                if (queryDocumentSnapshots != null) {
+                                                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                                        String userGroupId = snapshot.getString("userGroupId");
+                                                        ((MyApplication) getApplication()).setGroupId(userGroupId);
+                                                    }
+                                                }
+                                            }
+                                        });
                                 if (userType.equals("Student")) {
                                     Log.v("Instudent", "Now");
                                     finish();
