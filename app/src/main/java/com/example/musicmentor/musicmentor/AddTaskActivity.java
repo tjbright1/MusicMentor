@@ -54,7 +54,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 String userGroupId = ((MyApplication) getApplication()).getGroupId();
 
                 // Add a new document with a generated ID
-                db.collection("userGroups").document(userGroupId).collection("tasks").document()
+                db.collection("userGroups").document(userGroupId).collection("tasks").document(taskTitle.getText().toString())
                         .set(task)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

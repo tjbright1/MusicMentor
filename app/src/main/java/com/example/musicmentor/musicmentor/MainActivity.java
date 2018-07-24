@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (final DocumentSnapshot document: task.getResult()){
                             List<String> taski = new ArrayList<String>();
-                            String taskTitle = (String) document.get("title");
+                            String taskTitle = document.getId().toString();
                             Map<String, Object> docs = document.getData();
                             for (final String recording : docs.keySet()) {
                                 if (!recording.equals("title")) {

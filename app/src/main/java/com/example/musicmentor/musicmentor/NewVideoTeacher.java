@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -115,15 +116,15 @@ public class NewVideoTeacher extends Activity {
 
                     // Add a new document with a generated ID
                     Map<String, Object> recording = new HashMap<>();
-                    recording.put("title", recordingTitle.getText().toString());
-                    recording.put("task", parent);
+                    recording.put(recordingTitle.getText().toString(), "recording");
 
                     String userGroupId = ((MyApplication) getApplication()).getGroupId();
-                    db.collection("userGroups").document(userGroupId).collection("recordings").document()
-                            .set(recording)
+                    db.collection("userGroups").document(userGroupId).collection("tasks").document(parent)
+                            .set(recording, SetOptions.merge())
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    Log.v("Stored", "It");
                                     finish();
                                     Intent intent = new Intent(NewVideoTeacher.this, MainTeacherActivity.class);
                                     startActivity(intent);

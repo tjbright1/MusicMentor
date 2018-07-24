@@ -24,6 +24,15 @@ public class HomePageTeacherActivity extends AppCompatActivity {
 
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+        ImageButton search = (ImageButton) findViewById(R.id.findStudents);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),SearchForStudentActivity.class);
+                startActivity(i);
+            }
+        });
+
         ImageButton button = (ImageButton) findViewById(R.id.teacherLesson);
         button.setOnClickListener (new View.OnClickListener() {
             public void onClick(View v) {
