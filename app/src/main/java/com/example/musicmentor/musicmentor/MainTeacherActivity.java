@@ -80,20 +80,19 @@ public class MainTeacherActivity extends AppCompatActivity {
         final HashMap<String, List<String>> expandableListDetail = new HashMap<String, List<String>>();
 
         final String userGroupId = ((MyApplication) getApplication()).getGroupId();
-//        if (userGroupId) {
-            db.collection("userGroups").document(userGroupId).collection("tasks")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            for (final DocumentSnapshot document: task.getResult()){
-                                List<String> taski = new ArrayList<String>();
-                                String taskTitle = (String) document.get("title");
-                                Map<String, Object> docs = document.getData();
-                                for (final String recording : docs.keySet()) {
-                                    if (!recording.equals("title")) {
-                                        taski.add(recording);
-                                    }
+
+        db.collection("userGroups").document(userGroupId).collection("tasks")
+            .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (final DocumentSnapshot document : task.getResult()) {
+                            List<String> taski = new ArrayList<String>();
+                            String taskTitle = document.getId().toString();
+                            Map<String, Object> docs = document.getData();
+                            for (final String recording : docs.keySet()) {
+                                if (!recording.equals("title")) {
+                                    taski.add(recording);
                                 }
                                 taski.add("Add New Recording +");
                                 expandableListDetail.put("Task: " + taskTitle, taski);
@@ -123,7 +122,6 @@ public class MainTeacherActivity extends AppCompatActivity {
                                                                 int groupPosition, int childPosition, long id) {
 
 
-
                                         Log.i("change:", parent.getExpandableListAdapter().getChild(groupPosition, childPosition).toString());
 
                                         finish();
@@ -144,17 +142,13 @@ public class MainTeacherActivity extends AppCompatActivity {
                                             intent.putExtra("parent", parent.getExpandableListAdapter().getGroup(groupPosition).toString());
 
                                         }
-                                        Log.i("starting","activity");
+                                        Log.i("starting", "activity");
                                         startActivity(intent);
                                         return false;
                                     }
                                 });
                             }
                         }
-                    });
-
-//        } else { }
+                    }});
     }
-
-
 }

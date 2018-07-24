@@ -99,6 +99,10 @@
         <activity
             android:name=".SearchForStudentAcitivty"
             android:label="@string/title_activity_search_for_student_acitivty"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchForStudentActivity"
+            android:label="@string/title_activity_search_for_student"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
